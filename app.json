@@ -6,8 +6,26 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "extra":{
+      
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.agoras.kaia",
+      "usesAppleSignIn": true,
+      "entitlements": {
+        "aps-environment": "production"
+      },
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "remote-notification"
+        ],
+        "NSPhotoLibraryUsageDescription": "Agora necesita acceder a tus fotos para que puedas compartir imágenes en tus posts.",
+        "NSPhotoLibraryAddUsageDescription": "Agora necesita permiso para guardar imágenes editadas en tu carrete.",
+        "NSCameraUsageDescription": "Agora necesita usar la cámara si quieres tomar fotos directamente para tus posts.",
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
@@ -16,10 +34,52 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
+      "permissions": [
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.READ_INTERNAL_STORAGE",
+        "android.permission.WRITE_INTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.CAMERA",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO"
+      ],
+      "package": "com.agoras.kaia",
       "predictiveBackGestureEnabled": false
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-sqlite",
+      "expo-router",
+      "expo-notifications",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "16.4",
+            "useFrameworks": "static",
+            "buildReactNativeFromSource": false,
+            "extraPods": [
+              {
+                "name": "FirebaseCore",
+                "modular_headers": true
+              }
+            ],
+            "release": {
+              "deadCodeStripping": true,
+              "stripDebugSymbolsDuringCopy": true,
+              "optimizationLevel": "s"
+            }
+          },
+          "android": {
+            "enableShrinkResourcesInReleaseBuilds": true,
+            "enableProguardInReleaseBuilds": true,
+            "extraProguardRules": "-keep class javax.crypto.** { *; }\n-keep class java.security.** { *; }\n-keep class com.antihodio.agora.interceptors.** { *; }\n-keepattributes Signature, *Annotation*, EnclosingMethod\n-keep class okhttp3.** { *; }\n-dontwarn okhttp3.**"
+          }
+        }
+      ]
+    ]
   }
 }
