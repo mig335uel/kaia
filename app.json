@@ -4,7 +4,7 @@
     "slug": "kaia",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/kaiaLogo.png",
     "userInterfaceStyle": "light",
     "extra": {},
     "ios": {
@@ -16,11 +16,15 @@
       },
       "infoPlist": {
         "UIBackgroundModes": [
-          "remote-notification"
+          "remote-notification",
+          "location-update",
+          "voip"
         ],
-        "NSPhotoLibraryUsageDescription": "Agora necesita acceder a tus fotos para que puedas compartir imágenes en tus posts.",
-        "NSPhotoLibraryAddUsageDescription": "Agora necesita permiso para guardar imágenes editadas en tu carrete.",
-        "NSCameraUsageDescription": "Agora necesita usar la cámara si quieres tomar fotos directamente para tus posts.",
+        "NSPhotoLibraryUsageDescription": "Kaia necesita acceder a tu fototeca para que puedas seleccionar fotos y vídeos para tu perfil, chats y publicaciones.",
+        "NSMicrophoneUsageDescription": "Kaia necesita acceder al micrófono para realizar llamadas de voz y participar en VoiceGame.",
+        "NSCameraUsageDescription": "Kaia necesita acceder a la cámara para que puedas hacer fotos y vídeos para tu perfil, chats y publicaciones.",
+        "NSLocationWhenInUseUsageDescription": "Kaia necesita acceder a tu ubicación para mostrarte contenido cercano.",
+        "NSUserTrackingUsageDescription": "Este permiso nos ayuda a ofrecer anuncios personalizados y a financiar el desarrollo de Kaia.",
         "ITSAppUsesNonExemptEncryption": false
       },
       "googleServicesFile": "./GoogleService-Info.plist"
@@ -28,9 +32,9 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "foregroundImage": "./assets/kaiaLogo.png",
+        "backgroundImage": "./assets/kaiaLogo.png",
+        "monochromeImage": "./assets/kaiaLogo.png"
       },
       "permissions": [
         "android.permission.POST_NOTIFICATIONS",
@@ -52,6 +56,13 @@
       "expo-sqlite",
       "expo-router",
       "expo-notifications",
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-8578170674294985~2993770475",
+          "iosAppId": "ca-app-pub-8578170674294985~8166206105"
+        }
+      ],
       [
         "expo-build-properties",
         {
