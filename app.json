@@ -2,6 +2,7 @@
   "expo": {
     "name": "kaia",
     "slug": "kaia",
+    "scheme": "kaia",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/kaiaLogo.png",
@@ -14,6 +15,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.agoras.kaia",
+      "associatedDomains": ["applinks:kaia.agoras.es"],
       "usesAppleSignIn": true,
       "entitlements": {
         "aps-environment": "production"
