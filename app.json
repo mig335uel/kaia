@@ -6,7 +6,11 @@
     "orientation": "portrait",
     "icon": "./assets/kaiaLogo.png",
     "userInterfaceStyle": "light",
-    "extra": {},
+    "extra": {
+      "eas": {
+        "projectId": "43721e01-a8ee-47cc-a8a8-7298efe45d88"
+      }
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.agoras.kaia",
