@@ -5,7 +5,7 @@
     "scheme": "kaia",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/kaiaLogo.png",
+    "icon": "./assets/kaia.png",
     "userInterfaceStyle": "automatic",
     "extra": {
       "eas": {
@@ -38,9 +38,9 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/kaiaLogo.png",
-        "backgroundImage": "./assets/kaiaLogo.png",
-        "monochromeImage": "./assets/kaiaLogo.png"
+        "foregroundImage": "./assets/kaia.png",
+        "backgroundImage": "./assets/kaia.png",
+        "monochromeImage": "./assets/kaia.png"
       },
       "permissions": [
         "android.permission.POST_NOTIFICATIONS",
@@ -89,6 +89,7 @@
             }
           },
           "android": {
+            "kotlinVersion": "2.3.0",
             "enableShrinkResourcesInReleaseBuilds": true,
             "enableProguardInReleaseBuilds": true,
             "extraProguardRules": "-keep class javax.crypto.** { *; }\n-keep class java.security.** { *; }\n-keep class com.antihodio.agora.interceptors.** { *; }\n-keepattributes Signature, *Annotation*, EnclosingMethod\n-keep class okhttp3.** { *; }\n-dontwarn okhttp3.**"

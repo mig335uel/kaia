@@ -5,6 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
 import { Ionicons } from '@expo/vector-icons';
 import Svg, { Path } from 'react-native-svg';
+import MaskedView from "@react-native-masked-view/masked-view";
 function LoginFormIOS({ isDark }: { isDark: boolean }) {
     const [isShowPassword, setIsShowPassword] = useState<boolean>(true);
     const { t } = useTranslation();
@@ -32,36 +33,7 @@ function LoginFormIOS({ isDark }: { isDark: boolean }) {
                     </View>
                 </GlassView>
             </TouchableOpacity>
-            <KeyboardAvoidingView >
-                <GlassView
-                    glassEffectStyle='regular'
-                    isInteractive={true}
-                    className={`rounded-full`}>
 
-                    <TextInput
-                        placeholder={t('email')}
-                        className={`border border-gray-200 rounded-xl p-4`}
-                        style={[{ width: '100%' }]}
-                    />
-                </GlassView>
-                <View className="p-2" />
-                <GlassView
-                    glassEffectStyle='regular'
-                    isInteractive={true}
-                    className={`w-full rounded-full`}>
-                    <TextInput
-                        secureTextEntry={isShowPassword}
-                        autoComplete='off'
-                        placeholder={t('password')}
-                        className={`border border-gray-200 rounded-xl p-4`}
-                        style={[{ width: '100%' }]}
-                    />
-
-                </GlassView>
-                <GlassView
-
-                ></GlassView>
-            </KeyboardAvoidingView>
         </View>
     );
 }
@@ -77,6 +49,19 @@ export default function LoginForm() {
             <TouchableOpacity onPress={() => { }} style={styles.button}>
                 <Text>{t('loginWithGoogle')}</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => { }}>
+                <LinearGradient
+                    colors={['#4c669f', '#3b5998', '#192f6a']}
+                    style={styles.button}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    
+                >
+                    <Text>{t('login')}</Text>
+                </LinearGradient>
+            </TouchableOpacity>
+
+
         </View>
     );
 }
