@@ -15,7 +15,9 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.agoras.kaia",
-      "associatedDomains": ["applinks:kaia.agoras.es"],
+      "associatedDomains": [
+        "applinks:kaia.agoras.es"
+      ],
       "usesAppleSignIn": true,
       "entitlements": {
         "aps-environment": "production"
@@ -96,7 +98,8 @@
           }
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      "expo-web-browser"
     ]
   }
 }

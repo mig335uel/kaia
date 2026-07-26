@@ -23,6 +23,7 @@
   "alreadyHaveAccount": "¿Ya tienes una cuenta?",
   "dontHaveAccount": "¿No tienes una cuenta?",
   "loginWithGoogle": "Iniciar sesión con Google",
+  "GoogleLoginAlert": "¿Quiere iniciar sesión con Google?",
   "loginWithApple": "Iniciar sesión con Apple",
   "loginAnonymously": "Iniciar sesión de forma anónima",
   "logout": "Cerrar sesión",
