@@ -33,5 +33,12 @@
   "resetPasswordEmailSent": "Reset password email sent",
   "passwordReset": "Password reset",
   "usernameTaken": "Username taken",
-  "usernameAvailable": "Username available"
+  "usernameAvailable": "Username available",
+  "completeProfile": "Complete Profile",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "birthDate": "Birth Date",
+  "saveProfile": "Save Profile",
+  "pleaseFillAllFields": "Please fill in all required fields",
+  "error": "Error"
 }

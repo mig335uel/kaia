@@ -34,5 +34,12 @@
   "resetPasswordEmailSent": "Email de restablecimiento enviado",
   "passwordReset": "Contraseña restablecida",
   "usernameTaken": "Nombre de usuario ocupado",
-  "usernameAvailable": "Nombre de usuario disponible"
+  "usernameAvailable": "Nombre de usuario disponible",
+  "completeProfile": "Completar Perfil",
+  "firstName": "Nombre",
+  "lastName": "Apellidos",
+  "birthDate": "Fecha de nacimiento",
+  "saveProfile": "Guardar Perfil",
+  "pleaseFillAllFields": "Por favor, rellena todos los campos obligatorios",
+  "error": "Error"
 }
