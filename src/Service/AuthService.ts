@@ -2,6 +2,7 @@ import {supabase} from '@/lib/supabase';
 import * as WebBrowser from 'expo-web-browser';
 import * as QueryParams from 'expo-auth-session/build/QueryParams';
 import { makeRedirectUri } from 'expo-auth-session';
+import { removeDeviceToken } from './NotificationService';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -49,5 +50,21 @@ export async function SignInWithGoogle() {
 
     } catch (error) {
         console.error('Error signing in with Google:', error);
+    }
+}
+
+
+
+
+
+export async function SignOut() {
+    try {
+        await removeDeviceToken();
+        const { error } = await supabase.auth.signOut({ scope: 'local' });
+        if (error) {
+            throw error;
+        }
+    } catch (error) {
+        console.error('Error signing out:', error);
     }
 }

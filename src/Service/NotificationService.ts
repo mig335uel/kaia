@@ -123,3 +123,16 @@ export async function saveDeviceToken(userId: string, token: string) {
     console.error('❌ Error en saveDeviceToken:', err);
   }
 }
+
+export async function removeDeviceToken() {
+  try {
+    const deviceDbId = await SecureStore.getItemAsync('kaia_device_db_id');
+    if (deviceDbId) {
+      await supabase.from('devices').delete().eq('id', deviceDbId);
+      await SecureStore.deleteItemAsync('kaia_device_db_id');
+      console.log('✅ Dispositivo desregistrado de la BD');
+    }
+  } catch (err) {
+    console.error('❌ Error en removeDeviceToken:', err);
+  }
+}
