@@ -102,10 +102,10 @@ export default function LoginForm() {
                 </View>
 
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { }} >
+            <TouchableOpacity onPress={() => { }}  >
                 <LinearGradient
-                    colors={['#4c669f', '#3b5998', '#192f6a']}
-                    style={styles.button}
+                    colors={['#8E2DE2', '#4a00e0', '#8E2DE2']}
+                    style={[styles.button, { borderRadius: 9999 }]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
 
@@ -128,9 +128,9 @@ export function stylesLoginForm({ isDark }: { isDark: boolean }) {
         },
 
         button: {
-            padding: 3,
-            backgroundColor: isDark ? 'lightgray' : 'white',
-            borderRadius: 5,
+            padding: 0,
+            backgroundColor: isDark ? 'white' : 'white',
+            borderRadius: 9999,
             marginBottom: 10,
             borderWidth: isDark ? 1 : 1,
             borderColor: isDark ? 'white' : 'lightgray',
