@@ -40,5 +40,7 @@
   "birthDate": "Birth Date",
   "saveProfile": "Save Profile",
   "pleaseFillAllFields": "Please fill in all required fields",
-  "error": "Error"
+  "error": "Error",
+  "male": "Male",
+  "female": "Female"
 }

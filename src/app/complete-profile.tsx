@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator, Platform, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator, Platform, Image, Modal } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/lib/supabase';
@@ -17,6 +17,7 @@ export default function CompleteProfile() {
 
   const [loading, setLoading] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showGenderPicker, setShowGenderPicker] = useState(false);
   const [date, setDate] = useState(new Date());
 
   const [formData, setFormData] = useState({
@@ -24,7 +25,8 @@ export default function CompleteProfile() {
     last_name: '',
     username: '',
     birth_date: '',
-    profile_image: ''
+    profile_image: '',
+    gender:'',
   });
 
   const onChangeDate = (event: any, selectedDate?: Date) => {
@@ -152,6 +154,70 @@ export default function CompleteProfile() {
                 maximumDate={new Date()}
               />
             )}
+          </View>
+
+          <View>
+            <TouchableOpacity 
+              onPress={() => setShowGenderPicker(true)}
+              className={`w-full p-4 rounded-xl border ${isDark ? 'border-gray-700' : 'border-gray-300'}`}
+              style={{ backgroundColor: isDark ? '#1a1a1a' : '#f9fafb' }}
+            >
+              <Text className={isDark ? 'text-white' : 'text-black'}>
+                {formData.gender ? (formData.gender === 'Male' ? t('male') : t('female')) : t('gender')}
+              </Text>
+            </TouchableOpacity>
+
+            <Modal
+              visible={showGenderPicker}
+              transparent={true}
+              animationType="fade"
+              onRequestClose={() => setShowGenderPicker(false)}
+            >
+              <View className="flex-1 justify-center items-center bg-black/50 px-6">
+                <View 
+                  className={`w-full rounded-2xl overflow-hidden ${isDark ? 'bg-[#1a1a1a] border border-gray-700' : 'bg-white'}`}
+                >
+                  <View className="p-4 border-b border-gray-200 dark:border-gray-800">
+                    <Text className={`text-xl font-bold text-center ${isDark ? 'text-white' : 'text-black'}`}>
+                      {t('gender')}
+                    </Text>
+                  </View>
+                  
+                  <TouchableOpacity 
+                    className="p-4 border-b border-gray-200 dark:border-gray-800"
+                    onPress={() => {
+                      setFormData({ ...formData, gender: 'Male' });
+                      setShowGenderPicker(false);
+                    }}
+                  >
+                    <Text className={`text-center text-lg ${formData.gender === 'Male' ? 'text-[#8E2DE2] font-bold' : (isDark ? 'text-white' : 'text-black')}`}>
+                      {t('male')}
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity 
+                    className="p-4 border-b border-gray-200 dark:border-gray-800"
+                    onPress={() => {
+                      setFormData({ ...formData, gender: 'Female' });
+                      setShowGenderPicker(false);
+                    }}
+                  >
+                    <Text className={`text-center text-lg ${formData.gender === 'Female' ? 'text-[#8E2DE2] font-bold' : (isDark ? 'text-white' : 'text-black')}`}>
+                      {t('female')}
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity 
+                    className="p-4 bg-gray-100 dark:bg-gray-900"
+                    onPress={() => setShowGenderPicker(false)}
+                  >
+                    <Text className="text-center text-red-500 font-bold text-lg">
+                      {t('cancel', 'Cancel')}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
           </View>
 
           <TouchableOpacity onPress={handleSubmit} disabled={loading} className="mt-6">

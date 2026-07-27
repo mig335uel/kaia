@@ -41,5 +41,7 @@
   "birthDate": "Fecha de nacimiento",
   "saveProfile": "Guardar Perfil",
   "pleaseFillAllFields": "Por favor, rellena todos los campos obligatorios",
-  "error": "Error"
+  "error": "Error",
+  "male": "Masculino",
+  "female": "Femenino"
 }
