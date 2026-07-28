@@ -28,6 +28,8 @@
   "loginWithApple": "Iniciar sesión con Apple",
   "loginAnonymously": "Iniciar sesión de forma anónima",
   "logout": "Cerrar sesión",
+  "boy": "Chico",
+  "girl": "Chica",
   "usernameAlreadyExists": "El nombre de usuario ya existe",
   "emailAlreadyExists": "El email ya existe",
   "passwordDoesNotMatch": "Las contraseñas no coinciden",

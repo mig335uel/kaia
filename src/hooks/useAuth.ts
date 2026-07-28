@@ -4,31 +4,50 @@ import { useEffect, useState } from "react";
 
 
 
-export default function useAuth(){
-    const [user, setUser] = useState<Profile>({ 
-        id: '',
-        name: '',
-        last_name: '',
-        username: '',
-        email: '',
-        gender: "Male",
-        birth_date: '',
-        profile_image: '',
-        city: '',
-        country: '',
-    });
+export default function useAuth() {
+    const [user, setUser] = useState<Profile | null>(null);
+
     useEffect(() => {
-        async function getUser(){
-            const {data, error} = await supabase.from('users').select('*').eq('id', (await supabase.auth.getSession()).data.session?.user?.id).single();
+        let isMounted = true;
+
+        async function getUser(userId: string) {
+            const { data, error } = await supabase
+                .from('users')
+                .select('*')
+                .eq('id', userId)
+                .single();
             
-            if(!data && error){
+            if (error) {
                 console.log(error);
             }
-            if(data){
+            if (data && isMounted) {
                 setUser(data);
             }
         }
-        getUser();
+
+        // Fetch initial session
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session?.user?.id) {
+                getUser(session.user.id);
+            }
+        });
+
+        // Listen for auth changes
+        const { data: authListener } = supabase.auth.onAuthStateChange(
+            async (_event, session) => {
+                if (session?.user?.id) {
+                    getUser(session.user.id);
+                } else if (isMounted) {
+                    setUser(null);
+                }
+            }
+        );
+
+        return () => {
+            isMounted = false;
+            authListener.subscription.unsubscribe();
+        };
     }, []);
-    return user as Profile;
+
+    return user;
 }

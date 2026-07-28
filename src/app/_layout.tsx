@@ -28,6 +28,8 @@ export default function RootLayout() {
         setSession(session);
         if (!session) {
           setProfileStatus('loading');
+          // When session is lost, we don't need to check profile.
+          // The routing useEffect will handle redirecting to '/'.
         }
       }
     );
@@ -74,24 +76,30 @@ export default function RootLayout() {
   }, [profileStatus, session?.user]);
 
   useEffect(() => {
-    if (!isReady || (session && profileStatus === 'loading')) return;
+    if (!isReady) return;
+    if (session && profileStatus === 'loading') return;
 
-    const inTabsGroup = segments[0] === '(tabs)';
-    const inCompleteProfile = segments[0] === 'complete-profile';
+    const isCompleteProfile = segments[0] === 'complete-profile';
+    const isTabs = segments[0] === '(tabs)';
 
     if (session?.user) {
-      if (profileStatus === 'incomplete' && !inCompleteProfile) {
+      if (profileStatus === 'incomplete' && !isCompleteProfile) {
         router.replace('/complete-profile');
-      } else if (profileStatus === 'complete' && !inTabsGroup) {
+      } else if (profileStatus === 'complete' && !isTabs) {
         router.replace('/(tabs)');
       }
-    } else if (!session?.user && (inTabsGroup || inCompleteProfile)) {
-      router.replace('/');
+    } else if (!session?.user) {
+      // If no session and we are on any protected screen, kick back to root
+      if (isTabs || isCompleteProfile) {
+        router.replace('/');
+      }
     }
   }, [session, isReady, segments, profileStatus]);
 
-  if (!isReady || (session && profileStatus === 'loading')) {
-    return null; // O puedes retornar un componente de carga (SplashScreen)
+  // Only return null on the initial load. Once isReady is true, ALWAYS return the Stack.
+  // Returning null after Stack is mounted causes Expo Router to crash.
+  if (!isReady) {
+    return null;
   }
 
   return (
@@ -100,6 +108,7 @@ export default function RootLayout() {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="complete-profile" />
       </Stack>
     </>
   );

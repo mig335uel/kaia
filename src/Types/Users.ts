@@ -10,3 +10,12 @@ export interface Profile{
     city: string;
     country: string;
 }
+
+
+
+export interface UserPreferences{
+    user_id: string;
+    min_age_range: number;
+    max_age_range: number;
+    genderFeed: "Male" | "Female" | "All";
+}

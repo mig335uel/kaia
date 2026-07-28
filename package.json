@@ -4,6 +4,7 @@
   "main": "expo-router/entry",
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
+    "@ptomasroos/react-native-multi-slider": "^2.2.2",
     "@react-native-community/datetimepicker": "9.1.0",
     "@react-native-firebase/app": "^25.1.0",
     "@react-native-firebase/messaging": "^25.1.0",
@@ -15,6 +16,7 @@
     "expo-apple-authentication": "~57.0.1",
     "expo-auth-session": "~57.0.5",
     "expo-build-properties": "~57.0.7",
+    "expo-crypto": "~57.0.1",
     "expo-device": "~57.0.1",
     "expo-font": "^57.0.1",
     "expo-glass-effect": "~57.0.1",
@@ -32,6 +34,7 @@
     "i18next": "^26.3.6",
     "nativewind": "^4.2.6",
     "prettier-plugin-tailwindcss": "^0.5.14",
+    "prop-types": "^15.8.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-i18next": "^17.0.11",

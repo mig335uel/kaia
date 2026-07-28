@@ -14,6 +14,8 @@
   "continue": "Continue",
   "email": "Email",
   "password": "Password",
+  "boy": "Boy",
+  "girl": "Girl",
   "confirmPassword": "Confirm Password",
   "name": "Name",
   "forgotPassword": "Forgot Password",

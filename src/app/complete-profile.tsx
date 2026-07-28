@@ -74,7 +74,38 @@ export default function CompleteProfile() {
       });
 
       if (error) throw error;
+      const birthDate = new Date(formData.birth_date);
+      const ageInYears = (Date.now() - birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
 
+      let payload ={
+        user_id: data.user.id,
+        min_age_range: 0,
+        max_age_range: 0,
+        genderFeed: 'All'
+      }
+
+      if(ageInYears < 18){
+        payload.max_age_range = 25;
+        payload.min_age_range = 18;
+      }
+
+      if(ageInYears > 16 && ageInYears < 18){
+        payload.max_age_range = 25;
+        payload.min_age_range = 16;
+      }
+
+      if(ageInYears < 16){
+        payload.max_age_range = 16;
+        payload.min_age_range = 13;
+      }
+
+      const {error: userPreferenceError} = await supabase.from('user_preferences').insert({
+          user_id: payload.user_id,
+          min_age_range: payload.min_age_range,
+          max_age_range: payload.max_age_range,
+          genderFeed: payload.genderFeed,
+      });
+      if (userPreferenceError) throw userPreferenceError;
       // Force a reload of the auth state or navigate manually
       router.replace('/(tabs)');
     } catch (error: any) {
