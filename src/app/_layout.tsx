@@ -1,14 +1,12 @@
 import '../../global.css';
-import '@/i18n'; // Inicializamos i18n
+import '@/i18n';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { View, Text } from 'react-native';
 import { supabase } from '@/lib/supabase';
-import { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useState, useEffect } from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { StatusBar } from 'expo-status-bar';
 import { requestNotificationPermission, saveDeviceToken } from '@/Service/NotificationService';
-import rawNonce from '@/lib/NonceGenerator';
 
 export default function RootLayout() {
   const [session, setSession] = useState<any>(null);
@@ -16,19 +14,16 @@ export default function RootLayout() {
   const [profileStatus, setProfileStatus] = useState<'loading' | 'complete' | 'incomplete'>('loading');
   const segments = useSegments();
   const router = useRouter();
-  const generatedNonce = rawNonce();
 
-
+  // 0. CONFIGURACIÓN GOOGLE
   useEffect(() => {
-    // Configuración con auto-detección
     GoogleSignin.configure({
-      // ¡Importante! Lleva guion: 'auto-detect'
       webClientId: '56790361943-87olac8bu9i6ca617c9mms3irt19eqke.apps.googleusercontent.com',
       offlineAccess: true,
-
     });
   }, []);
 
+  // 1. ESCUCHADOR DE SESIÓN
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
@@ -40,11 +35,10 @@ export default function RootLayout() {
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
+        console.log('[Auth] onAuthStateChange:', _event, !!session);
         setSession(session);
         if (!session) {
           setProfileStatus('loading');
-          // When session is lost, we don't need to check profile.
-          // The routing useEffect will handle redirecting to '/'.
         }
       }
     );
@@ -54,11 +48,11 @@ export default function RootLayout() {
     };
   }, []);
 
+  // 2. VERIFICACIÓN DE PERFIL
   useEffect(() => {
     const checkProfile = async () => {
       try {
         if (session?.user) {
-          console.log('[Auth] Checking profile for user:', session.user.id);
           setProfileStatus('loading');
           const { data, error } = await supabase
             .from('users')
@@ -66,22 +60,15 @@ export default function RootLayout() {
             .eq('id', session.user.id)
             .single();
 
-          if (error && error.code !== 'PGRST116') {
-            console.log('[Auth] Profile check error:', error);
-          }
-
           if (data) {
-            console.log('[Auth] Profile complete');
             setProfileStatus('complete');
           } else {
-            console.log('[Auth] Profile incomplete');
             setProfileStatus('incomplete');
           }
         }
       } catch (err) {
-        console.error('[Auth] Exception in checkProfile:', err);
+        setProfileStatus('incomplete');
       } finally {
-        console.log('[Auth] Setting isReady to true');
         setIsReady(true);
       }
     }
@@ -91,18 +78,18 @@ export default function RootLayout() {
     }
   }, [session]);
 
+  // 3. NOTIFICACIONES
   useEffect(() => {
     if (profileStatus === 'complete' && session?.user) {
       const setupNotifications = async () => {
         const token = await requestNotificationPermission();
-        if (token) {
-          await saveDeviceToken(session.user.id, token);
-        }
+        if (token) await saveDeviceToken(session.user.id, token);
       };
       setupNotifications();
     }
   }, [profileStatus, session?.user]);
 
+  // 4. ENRUTADOR VIGILANTE
   useEffect(() => {
     if (!isReady) return;
     if (session && profileStatus === 'loading') return;
@@ -113,28 +100,23 @@ export default function RootLayout() {
 
     if (session?.user) {
       if (profileStatus === 'incomplete' && !inCompleteProfile) {
-        console.log('Routing to /complete-profile');
         router.replace('/complete-profile');
       } else if (profileStatus === 'complete' && !inTabs) {
-        console.log('Routing to /(tabs)');
-        router.replace('/(tabs)');
+        router.replace('/');
       }
-    } else if (!session?.user && inProtectedGroup) {
-      console.log('Routing to / (root)');
-      router.replace('/');
+    } else if (!session && inProtectedGroup) {
+      setTimeout(() => {
+        if (router.canDismiss()) {
+          try {
+            router.dismissAll();
+          } catch (e) { }
+        }
+        router.replace('/login');
+      }, 0);
     }
   }, [session, isReady, segments, profileStatus]);
 
-  // Use a transparent effect for Expo Router instead of returning null
-  useEffect(() => {
-    if (isReady) {
-      // Ocultar cualquier splash screen manual si lo tuvieras
-    }
-  }, [isReady]);
-
   if (!isReady) {
-    // Es mejor renderizar el layout base vacío o con un color de fondo 
-    // para no romper el árbol de navegación de Expo Router
     return (
       <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
         <Text>Cargando...</Text>
@@ -146,7 +128,7 @@ export default function RootLayout() {
     <>
       <StatusBar style="auto" />
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
+        <Stack.Screen name="login" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="complete-profile" />
       </Stack>

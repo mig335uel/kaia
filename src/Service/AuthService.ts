@@ -12,7 +12,15 @@ import {
     isErrorWithCode,
 } from '@react-native-google-signin/google-signin';
 import rawNonce from '@/lib/NonceGenerator';
+// IMPORTANTE: Añade el auth de Firebase
+import { GoogleAuthProvider, getAuth, AppleAuthProvider, signInWithCredential } from '@react-native-firebase/auth';
+import { getApp } from '@react-native-firebase/app';
+
+
 WebBrowser.maybeCompleteAuthSession();
+
+// 1. AÑADE ESTO: Configuración vital para Android (Usa tu ID web de Firebase)
+
 
 export async function SignInWithGoogle() {
     const generatedNonce = rawNonce();
@@ -21,46 +29,31 @@ export async function SignInWithGoogle() {
         const response = await GoogleSignin.signIn();
 
         if (isSuccessResponse(response)) {
+            const { accessToken } = await GoogleSignin.getTokens();
             const idToken = response.data.idToken;
             if (!idToken) {
                 throw new Error('No id token present');
             }
             console.log(idToken);
+            
+            // --- LOGIN SUPABASE ---
             const { data, error } = await supabase.auth.signInWithIdToken({
                 provider: 'google',
                 token: idToken,
             });
 
             if (error) {
-                throw Error(`Error signing in with Google: ${error.message}`);
+                throw Error(`Error signing in with Google (Supabase): ${error.message}`);
             }
+
+            // --- LOGIN FIREBASE (¡Añadido!) ---
+            const googleCredential = GoogleAuthProvider.credential(idToken, accessToken);
+            await signInWithCredential(getAuth(getApp()), googleCredential);
+
         } else {
             console.log('Google Sign-In cancelled or failed');
             return;
         }
-
-        // if (data?.url) {
-        //     const res = await WebBrowser.openAuthSessionAsync(data.url, redirectUrl);
-
-        //     if (res.type === 'success' && res.url) {
-        //         const { params, errorCode } = QueryParams.getQueryParams(res.url);
-
-        //         if (errorCode) {
-        //             throw new Error(errorCode);
-        //         }
-
-        //         if (params?.code) {
-        //             await supabase.auth.exchangeCodeForSession(params.code);
-        //         } else if (params?.access_token && params?.refresh_token) {
-        //             await supabase.auth.setSession({
-        //                 access_token: params.access_token,
-        //                 refresh_token: params.refresh_token,
-        //             });
-        //         }
-        //     }
-
-        //     return data;
-        // }
 
     } catch (error) {
         console.error('Error signing in with Google:', error);
@@ -69,7 +62,6 @@ export async function SignInWithGoogle() {
 
 export async function SignInWithApple() {
     const generatedNonce = rawNonce();
-    // 2. Hash the raw nonce using SHA256 (Note: this is an async operation in React Native)
     const hashedNonce = await Crypto.digestStringAsync(
         Crypto.CryptoDigestAlgorithm.SHA256,
         generatedNonce
@@ -85,6 +77,7 @@ export async function SignInWithApple() {
         const token = credential.identityToken!;
         console.log(token);
 
+        // --- LOGIN SUPABASE ---
         const { data, error } = await supabase.auth.signInWithIdToken({
             provider: 'apple',
             token: token,
@@ -93,36 +86,69 @@ export async function SignInWithApple() {
         if (error) {
             throw Error(`Error signing in with Apple: ${error.message}`);
         }
+        
+        // --- LOGIN FIREBASE (¡Añadido!) ---
+        const firebaseAppleCredential = AppleAuthProvider.credential(token, generatedNonce);
+        await signInWithCredential(getAuth(getApp()),firebaseAppleCredential);
+        
         console.log(data);
-
 
     } catch (error) {
         console.error('Error signing in with Apple:', error);
     }
 }
 
-
-
 export async function SignOut() {
     try {
+        console.log('[AuthService] SignOut called');
+        // 1. Comprobamos el proveedor a través de Supabase (Igual que en Flutter)
         const { data: { user } } = await supabase.auth.getUser();
+        console.log('[AuthService] Supabase user:', user?.id);
         
         if (user) {
-            await removeDeviceToken();
-            const { error } = await supabase.auth.signOut({ scope: 'local' });
-            
-            try {
-                await GoogleSignin.signOut();
-            } catch (e) {
-                console.log('Google SignOut error or not signed in with Google');
+            // 'providers' es un array. Ej: ['google'] o ['apple']
+            const providers = user.app_metadata?.providers || [];
+            console.log('[AuthService] Providers:', providers);
+
+            // 2. Si el proveedor fue Google, cerramos su sesión nativa
+            if (providers.includes('google')) {
+                try {
+                    await GoogleSignin.signOut();
+                    console.log('[AuthService] GoogleSignin signed out');
+                } catch (e) {
+                    console.log('Error cerrando sesión nativa de Google:', e);
+                }
             }
+
+            // (Opcional) Comprobamos de la misma manera si fue Apple
+            if (providers.includes('apple')) {
+                // Apple no requiere un "signOut" nativo como Google
+                console.log("El usuario había iniciado sesión con Apple");
+            }
+
+            // Borramos el token del dispositivo para notificaciones
+            console.log('[AuthService] Removing device token...');
+            await removeDeviceToken();
+            console.log('[AuthService] Device token removed');
+
+            // 3. Cerramos la sesión en Firebase
+            console.log('[AuthService] Firebase signout...');
+            await getAuth(getApp()).signOut();
+            console.log('[AuthService] Firebase signout done');
+
+            // 4. Cerramos la sesión en Supabase
+            console.log('[AuthService] Supabase signout...');
+            const { error } = await supabase.auth.signOut({ scope: 'local' });
+            console.log('[AuthService] Supabase signout done, error:', error);
             
             if (error) {
                 throw error;
             }
         }
+        
+        console.log('[AuthService] SignOut completed successfully');
         return true;
     } catch (error) {
-        console.error('Error signing out:', error);
+        console.error('Error al cerrar sesión:', error);
     }
 }

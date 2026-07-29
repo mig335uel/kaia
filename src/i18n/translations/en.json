@@ -40,6 +40,8 @@
   "completeProfile": "Complete Profile",
   "firstName": "First Name",
   "lastName": "Last Name",
+  "chatGame": "Flash Chat",
+  "voiceGame": "Flash Call",
   "birthDate": "Birth Date",
   "saveProfile": "Save Profile",
   "pleaseFillAllFields": "Please fill in all required fields",

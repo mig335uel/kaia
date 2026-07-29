@@ -12,6 +12,7 @@ import { supabase } from "@/lib/supabase";
 import useAuth from "@/hooks/useAuth";
 import { UserPreferences } from "@/Types/Users";
 import { Ionicons } from "@expo/vector-icons";
+import { Cards } from "@/Components/CardsGames/Cards";
 
 
 
@@ -22,11 +23,7 @@ export default function HomeScreen() {
   const [feedPreferencesModalView, setFeedPreferencesModalView] = useState(false);
 
   const handleSignOut = async () => {
-    const response = await SignOut();
-
-    if(response === true){
-      router.replace('/');
-    }
+    await SignOut();
   }
   const user = useAuth();
 
@@ -80,6 +77,8 @@ export default function HomeScreen() {
             setPreferences={setChangeUserPreference}
           />
         )}
+
+        <Cards/>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <MaskedView maskElement={<Text
           className={`${isDark ? 'text-white' : 'text-black'} text-3xl font-bold text-center`}

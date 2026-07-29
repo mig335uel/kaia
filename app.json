@@ -109,7 +109,8 @@
       [
         "./withKotlinCompiler.js",
         "2.3.0"
-      ]
+      ],
+      "@react-native-firebase/auth"
     ]
   }
 }

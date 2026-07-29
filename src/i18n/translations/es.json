@@ -41,6 +41,8 @@
   "completeProfile": "Completar Perfil",
   "firstName": "Nombre",
   "lastName": "Apellidos",
+  "chatGame": "Flash Chat",
+  "voiceGame": "Flash Call",
   "birthDate": "Fecha de nacimiento",
   "saveProfile": "Guardar Perfil",
   "pleaseFillAllFields": "Por favor, rellena todos los campos obligatorios",
