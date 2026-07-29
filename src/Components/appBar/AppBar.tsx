@@ -20,9 +20,9 @@ export function AppBar({ isDark, feedPreferencesModalView }: { isDark: boolean, 
                 <MaskedView
                     maskElement={<Text className={`flex-row ${isDark ? 'text-white' : 'text-black'} text-[25px] font-bold justify-center items-center `}>{t("appName")}</Text>}>
                     <LinearGradient
-                        colors={['#8E2DE2', '#4A00E0']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
+                        colors={['#6A5BFC', '#7575FF', '#3FCECC']}
+                        start={{ x: 0, y: 0.5 }}
+                        end={{ x: 1, y: 0.5 }}
                     >
                         <Text className={`flex-row ${isDark ? 'text-white' : 'text-black'} text-[25px] font-bold justify-center items-center opacity-0 `}>{t("appName")}</Text>
                     </LinearGradient>

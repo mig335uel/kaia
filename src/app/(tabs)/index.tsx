@@ -22,7 +22,11 @@ export default function HomeScreen() {
   const [feedPreferencesModalView, setFeedPreferencesModalView] = useState(false);
 
   const handleSignOut = async () => {
-    await SignOut();
+    const response = await SignOut();
+
+    if(response === true){
+      router.replace('/');
+    }
   }
   const user = useAuth();
 
@@ -81,9 +85,9 @@ export default function HomeScreen() {
           className={`${isDark ? 'text-white' : 'text-black'} text-3xl font-bold text-center`}
         >{t('welcome')}</Text>}>
           <LinearGradient
-            colors={['#8E2DE2', '#4A00E0']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
+            colors={['#6A5BFC', '#7575FF', '#3FCECC']}
+            start={{ x: 0, y: 0.5 }}
+            end={{ x: 1, y: 0.5 }}
           >
             <Text
               className={` text-3xl font-bold text-center opacity-0`}

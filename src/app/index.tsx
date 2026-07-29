@@ -21,15 +21,15 @@ export default function Index() {
           style={{ width: 120, height: 120 }}
           resizeMode="contain"
         />
-      
+
 
         <MaskedView
           maskElement={<Text className="text-4xl font-bold text-center">{t('welcome')}</Text>}
         >
           <LinearGradient
-            colors={['#8E2DE2', '#4A00E0']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
+            colors={['#6A5BFC', '#7575FF', '#3FCECC']}
+            start={{ x: 0, y: 0.5 }}
+            end={{ x: 1, y: 0.5 }}
           >
             <Text className="text-4xl font-bold text-center opacity-0">{t('welcome')}</Text>
           </LinearGradient>
