@@ -39,10 +39,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/kaia.png",
-        "backgroundImage": "./assets/kaia.png",
-        "monochromeImage": "./assets/kaia.png"
+        "backgroundColor": "#FFFFFF",
+        "foregroundImage": "./assets/KaiaAndroidLogo.png",
+        "backgroundImage": "./assets/KaiaAndroidLogo.png",
+        "monochromeImage": "./assets/KaiaAndroidLogo.png"
       },
       "permissions": [
         "android.permission.POST_NOTIFICATIONS",
