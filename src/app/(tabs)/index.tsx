@@ -13,6 +13,7 @@ import useAuth from "@/hooks/useAuth";
 import { UserPreferences } from "@/Types/Users";
 import { Ionicons } from "@expo/vector-icons";
 import { Cards } from "@/Components/CardsGames/Cards";
+import { ProfileFeed } from "@/Components/ProfilesFeed/ProfileFeed";
 
 
 
@@ -29,7 +30,7 @@ export default function HomeScreen() {
 
   const [currentUserPreferences, setCurrentUserPreferences] = useState<UserPreferences | null>(null);
 
-  useEffect(()=>{
+  useEffect(() => {
     const getCurrentUserPreferences = async () => {
       if (!user || !user.id) return;
 
@@ -42,7 +43,7 @@ export default function HomeScreen() {
       setCurrentUserPreferences(data);
     }
     getCurrentUserPreferences();
-  },[user])
+  }, [user])
 
   const [changeUserPreference, setChangeUserPreference] = useState<UserPreferences>({
     user_id: user?.id || "",
@@ -66,33 +67,21 @@ export default function HomeScreen() {
 
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={['top']} className={`${isDark ? 'bg-black' : 'bg-white'}`}>
-      <AppBar isDark={isDark} feedPreferencesModalView={() => setFeedPreferencesModalView(true)}/>
-        {feedPreferencesModalView && (
-          <FeedPreferencesModal 
-            feedPreferencesModalView={feedPreferencesModalView} 
-            setFeedPreferencesModalView={setFeedPreferencesModalView}
-            user={user}
-            preferences={changeUserPreference}
-            setPreferences={setChangeUserPreference}
-          />
-        )}
-
-        <Cards/>
+    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']} className={`${isDark ? 'bg-black' : 'bg-white'}`}>
+      <AppBar isDark={isDark} feedPreferencesModalView={() => setFeedPreferencesModalView(true)} />
+      {feedPreferencesModalView && (
+        <FeedPreferencesModal
+          feedPreferencesModalView={feedPreferencesModalView}
+          setFeedPreferencesModalView={setFeedPreferencesModalView}
+          user={user}
+          preferences={changeUserPreference}
+          setPreferences={setChangeUserPreference}
+        />
+      )}
+      <View style={{marginTop: 20}} />
+      <Cards />
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <MaskedView maskElement={<Text
-          className={`${isDark ? 'text-white' : 'text-black'} text-3xl font-bold text-center`}
-        >{t('welcome')}</Text>}>
-          <LinearGradient
-            colors={['#6A5BFC', '#7575FF', '#3FCECC']}
-            start={{ x: 0, y: 0.5 }}
-            end={{ x: 1, y: 0.5 }}
-          >
-            <Text
-              className={` text-3xl font-bold text-center opacity-0`}
-            >{t('welcome')}</Text>
-          </LinearGradient>
-        </MaskedView>
+        <ProfileFeed isDark={isDark} />
         <TouchableOpacity onPress={() => { handleSignOut() }} className="p-2 bg-red-500 rounded mt-4">
           <Text className="text-white">Cerrar sesión</Text>
         </TouchableOpacity>
@@ -105,19 +94,19 @@ export default function HomeScreen() {
 
 
 function FeedPreferencesModal({
-  feedPreferencesModalView, 
+  feedPreferencesModalView,
   setFeedPreferencesModalView,
   user,
   preferences,
   setPreferences
 }: {
-  feedPreferencesModalView: boolean, 
+  feedPreferencesModalView: boolean,
   setFeedPreferencesModalView: (value: boolean) => void,
   user: any,
   preferences: UserPreferences,
   setPreferences: (prefs: UserPreferences) => void
-}){
-  const {t} = useTranslation()
+}) {
+  const { t } = useTranslation()
   const isDark = useColorScheme() === 'dark';
 
   const birthDate = user?.birth_date ? new Date(user.birth_date) : null;
@@ -146,7 +135,7 @@ function FeedPreferencesModal({
     console.log("user preferences updated")
     setFeedPreferencesModalView(false);
   }
-  
+
   return (
     <Modal
       animationType="slide"
@@ -157,16 +146,16 @@ function FeedPreferencesModal({
       }}
     >
       <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-        <TouchableOpacity 
-          style={{ flex: 1 }} 
-          activeOpacity={1} 
-          onPress={() => setFeedPreferencesModalView(false)} 
+        <TouchableOpacity
+          style={{ flex: 1 }}
+          activeOpacity={1}
+          onPress={() => setFeedPreferencesModalView(false)}
         />
-        <View style={{ 
-          backgroundColor: isDark ? '#1c1c1e' : 'white', 
-          borderTopLeftRadius: 25, 
-          borderTopRightRadius: 25, 
-          padding: 20, 
+        <View style={{
+          backgroundColor: isDark ? '#1c1c1e' : 'white',
+          borderTopLeftRadius: 25,
+          borderTopRightRadius: 25,
+          padding: 20,
           alignItems: 'center',
           minHeight: '40%',
           shadowColor: '#000',
@@ -176,26 +165,26 @@ function FeedPreferencesModal({
           elevation: 5,
         }}>
           <View style={{ width: 40, height: 5, backgroundColor: 'gray', borderRadius: 3, marginBottom: 20 }} />
-          
+
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20, color: isDark ? 'white' : 'black' }}>
             Preferencias de Feed
           </Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginBottom: 30, paddingHorizontal: 10 }}>
-            <TouchableOpacity onPress={() => setPreferences({...preferences, genderFeed: 'Male'})}>
+            <TouchableOpacity onPress={() => setPreferences({ ...preferences, genderFeed: 'Male' })}>
               <View className={`flex flex-col items-center justify-center rounded-xl h-24 w-24 ${preferences.genderFeed === 'Male' ? (isDark ? 'bg-blue-900 border-2 border-[#0085FF]' : 'bg-[#87C8FF] border-2 border-blue-500') : (isDark ? 'bg-gray-800' : 'bg-gray-200')}`}>
                 <Ionicons name='male' size={48} color={preferences.genderFeed === 'Male' ? '#0085FF' : 'gray'} />
                 <Text style={{ color: preferences.genderFeed === 'Male' ? '#0085FF' : 'gray', fontWeight: 'bold', marginTop: 5 }}>{t('boy')}</Text>
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => setPreferences({...preferences, genderFeed: 'Female'})}>
+            <TouchableOpacity onPress={() => setPreferences({ ...preferences, genderFeed: 'Female' })}>
               <View className={`flex flex-col items-center justify-center rounded-xl h-24 w-24 ${preferences.genderFeed === 'Female' ? (isDark ? 'bg-pink-900 border-2 border-[#FF0085]' : 'bg-[#FF87C8] border-2 border-pink-500') : (isDark ? 'bg-gray-800' : 'bg-gray-200')}`}>
                 <Ionicons name='female' size={48} color={preferences.genderFeed === 'Female' ? '#FF0085' : 'gray'} />
                 <Text style={{ color: preferences.genderFeed === 'Female' ? '#FF0085' : 'gray', fontWeight: 'bold', marginTop: 5 }}>{t('girl')}</Text>
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => setPreferences({...preferences, genderFeed: 'All'})}>
+            <TouchableOpacity onPress={() => setPreferences({ ...preferences, genderFeed: 'All' })}>
               <View className={`flex flex-col items-center justify-center rounded-xl h-24 w-24 ${preferences.genderFeed === 'All' ? (isDark ? 'bg-purple-900 border-2 border-[#8E2DE2]' : 'bg-[#D0B3F2] border-2 border-purple-500') : (isDark ? 'bg-gray-800' : 'bg-gray-200')}`}>
                 <Ionicons name='male-female' size={48} color={preferences.genderFeed === 'All' ? '#8E2DE2' : 'gray'} />
                 <Text style={{ color: preferences.genderFeed === 'All' ? '#8E2DE2' : 'gray', fontWeight: 'bold', marginTop: 5 }}>{t('all', 'Todos')}</Text>
@@ -207,7 +196,7 @@ function FeedPreferencesModal({
             <Text style={{ fontSize: 16, fontWeight: 'bold', color: isDark ? 'white' : 'black', marginBottom: 15, alignSelf: 'flex-start', marginLeft: 10 }}>
               Rango de Edad {isUnder16 && "(Fijo por ser menor de 16 años)"}
             </Text>
-            
+
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginBottom: 10, paddingHorizontal: 15 }}>
               <Text style={{ color: isDark ? 'white' : 'black', fontWeight: 'bold', fontSize: 16 }}>
                 {isUnder16 ? 13 : preferences.min_age_range} años
@@ -261,7 +250,7 @@ function FeedPreferencesModal({
               enabledTwo={!isUnder16}
             />
           </View>
-          
+
           <TouchableOpacity
             style={{ marginTop: 30, padding: 15, backgroundColor: '#8E2DE2', borderRadius: 15, width: '100%', alignItems: 'center' }}
             onPress={handleSubmit}

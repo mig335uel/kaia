@@ -64,6 +64,14 @@ export default function CompleteProfile() {
       const { data } = await supabase.auth.getUser();
       if (!data?.user) throw new Error('No user found');
 
+      const ifconfigResponse = await fetch('https://ifconfig.me/all.json');
+      const ifconfigData = await ifconfigResponse.json();
+      const ipAddress = ifconfigData.ip_addr;
+      
+      const ipApiResponse = await fetch(`http://ip-api.com/json/${ipAddress}`);
+      const locationData = await ipApiResponse.json();
+      console.log('Location Data:', locationData);
+
       const { error } = await supabase.from('users').insert({
         id: data.user.id,
         name: formData.name,
@@ -71,6 +79,7 @@ export default function CompleteProfile() {
         username: formData.username,
         birth_date: formData.birth_date,
         profile_image: formData.profile_image || null,
+        region: `${locationData.regionName}, ${locationData.country}`, // e.g. "Quebec, Canada"
       });
 
       if (error) throw error;

@@ -3,12 +3,13 @@ export interface Profile{
     name: string;
     last_name: string;
     username: string;
-    email?: string;
+    description: string;
     gender: "Male" | "Female";
     birth_date: string;
     profile_image: string;
-    city: string;
-    country: string;
+    city?: string;
+    country?: string;
+    region?: string;
 }
 
 
