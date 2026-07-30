@@ -79,7 +79,7 @@ export default function CompleteProfile() {
         username: formData.username,
         birth_date: formData.birth_date,
         profile_image: formData.profile_image || null,
-        region: `${locationData.regionName}, ${locationData.country}`, // e.g. "Quebec, Canada"
+        region: `${locationData.countryCode}, ${locationData.country}`, // e.g. "Quebec, Canada"
       });
 
       if (error) throw error;
