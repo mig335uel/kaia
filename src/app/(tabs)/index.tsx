@@ -67,7 +67,7 @@ export default function HomeScreen() {
 
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']} className={`${isDark ? 'bg-black' : 'bg-white'}`}>
+    <SafeAreaView style={{ flex: 1 }} edges={['top']} className={`${isDark ? 'bg-black' : 'bg-white'}`}>
       <AppBar isDark={isDark} feedPreferencesModalView={() => setFeedPreferencesModalView(true)} />
       {feedPreferencesModalView && (
         <FeedPreferencesModal
@@ -78,13 +78,12 @@ export default function HomeScreen() {
           setPreferences={setChangeUserPreference}
         />
       )}
-      <View style={{marginTop: 20}} />
+      <View style={{ marginTop: 20 }} />
       <Cards />
+      <View style={{ marginBottom: 15 }} />
+      <ProfileFeed isDark={isDark} />
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <ProfileFeed isDark={isDark} />
-        <TouchableOpacity onPress={() => { handleSignOut() }} className="p-2 bg-red-500 rounded mt-4">
-          <Text className="text-white">Cerrar sesión</Text>
-        </TouchableOpacity>
+
       </View>
     </SafeAreaView>
   );

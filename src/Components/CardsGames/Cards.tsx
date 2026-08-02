@@ -13,7 +13,7 @@ export function Cards() {
 
 
     return (
-        <View className='w-full flex flex-row items-center justify-around mt-6'>
+        <View className='w-full flex flex-row items-center justify-around'>
             {/* Left Card: Chat */}
             <TouchableOpacity
                 style={{
