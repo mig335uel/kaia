@@ -37,7 +37,7 @@ export default function HomeScreen() {
   useEffect(() => {
     const checkAppMode = async () => {
       if (!user || !user.id) return;
-      
+
       if (!user.app_mode) {
         const bDate = new Date(user.birth_date);
         const age = Math.floor((Date.now() - bDate.getTime()) / (1000 * 60 * 60 * 24 * 365.25));
@@ -54,10 +54,10 @@ export default function HomeScreen() {
 
   const selectMode = async (selectedMode: 'Social' | 'Dating') => {
     setShowModePicker(false);
-    
+
     // Al actualizar el contexto local, el (home)/_layout cambia instantaneamente
     setMode(selectedMode.toLowerCase() as 'dating' | 'social');
-    
+
     // Y actualizamos supabase en segundo plano
     await supabase.from('users').update({ app_mode: selectedMode }).eq('id', user?.id);
   };
@@ -111,13 +111,6 @@ export default function HomeScreen() {
         />
       )}
       <View style={{ marginTop: 20 }} />
-      <TouchableOpacity 
-          onPress={() => selectMode('Dating')} 
-          style={{ backgroundColor: '#8E2DE2', padding: 10, marginHorizontal: 20, borderRadius: 10, alignItems: 'center' }}
-      >
-          <Text style={{ color: 'white', fontWeight: 'bold' }}>GO TO DATING MODE (TEST SOCKET)</Text>
-      </TouchableOpacity>
-      <View style={{ marginTop: 10 }} />
       <Cards />
       <View style={{ marginBottom: 15 }} />
       <ProfileFeed isDark={isDark} />
@@ -133,7 +126,7 @@ export default function HomeScreen() {
         visible={showModePicker}
         transparent={true}
         animationType="slide"
-        onRequestClose={() => {}}
+        onRequestClose={() => { }}
       >
         <View className="flex-1 justify-end bg-black/60">
           <View className={`w-full p-6 rounded-t-3xl ${isDark ? 'bg-[#1a1a1a]' : 'bg-white'}`}>
@@ -144,7 +137,7 @@ export default function HomeScreen() {
               {t('chooseModeDesc', 'Puedes cambiar de modo en cualquier momento desde los ajustes')}
             </Text>
 
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={() => selectMode('Dating')}
               className="mb-4 shadow-sm"
             >
@@ -167,7 +160,7 @@ export default function HomeScreen() {
               </LinearGradient>
             </TouchableOpacity>
 
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={() => selectMode('Social')}
               className="mb-6 shadow-sm"
             >
