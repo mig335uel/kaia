@@ -7,12 +7,13 @@ import { useState, useEffect } from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { StatusBar } from 'expo-status-bar';
 import { requestNotificationPermission, saveDeviceToken } from '@/Service/NotificationService';
+import { AppModeProvider } from '@/hooks/useAppMode';
 
 export default function RootLayout() {
   const [session, setSession] = useState<any>(null);
   const [isReady, setIsReady] = useState(false);
   const [profileStatus, setProfileStatus] = useState<'loading' | 'complete' | 'incomplete'>('loading');
-  const segments = useSegments();
+  const segments = useSegments() as string[];
   const router = useRouter();
 
   // 0. CONFIGURACIÓN GOOGLE
@@ -94,15 +95,15 @@ export default function RootLayout() {
     if (!isReady) return;
     if (session && profileStatus === 'loading') return;
 
-    const inTabs = segments[0] === '(tabs)';
+    const inHome = segments[0] === '(home)';
     const inCompleteProfile = segments[0] === 'complete-profile';
-    const inProtectedGroup = inTabs || inCompleteProfile;
+    const inProtectedGroup = inHome || inCompleteProfile;
 
     if (session?.user) {
       if (profileStatus === 'incomplete' && !inCompleteProfile) {
         router.replace('/complete-profile');
-      } else if (profileStatus === 'complete' && !inTabs) {
-        router.replace('/');
+      } else if (profileStatus === 'complete' && !inHome) {
+        router.replace('/(home)');
       }
     } else if (!session && inProtectedGroup) {
       setTimeout(() => {
@@ -125,13 +126,13 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <AppModeProvider>
       <StatusBar style="auto" />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="login" />
-        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="(home)" />
         <Stack.Screen name="complete-profile" />
       </Stack>
-    </>
+    </AppModeProvider>
   );
 }

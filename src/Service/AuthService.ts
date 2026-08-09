@@ -1,7 +1,7 @@
 import { supabase } from '@/lib/supabase';
 import * as WebBrowser from 'expo-web-browser';
 import * as QueryParams from 'expo-auth-session/build/QueryParams';
-import { makeRedirectUri } from 'expo-auth-session';
+import * as AuthSession from 'expo-auth-session';
 import { removeDeviceToken } from './NotificationService';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Crypto from 'expo-crypto';
@@ -13,7 +13,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 import rawNonce from '@/lib/NonceGenerator';
 // IMPORTANTE: Añade el auth de Firebase
-import { GoogleAuthProvider, getAuth, AppleAuthProvider, signInWithCredential } from '@react-native-firebase/auth';
+import { GoogleAuthProvider, getAuth, AppleAuthProvider, signInWithCredential, OAuthProvider } from '@react-native-firebase/auth';
 import { getApp } from '@react-native-firebase/app';
 
 
@@ -59,7 +59,65 @@ export async function SignInWithGoogle() {
         console.error('Error signing in with Google:', error);
     }
 }
+export async function SignInWithAgoras() {
+    try {
+        const codeVerifier = rawNonce();
 
+        // Generate PKCE code challenge
+        const digestBase64 = await Crypto.digestStringAsync(
+            Crypto.CryptoDigestAlgorithm.SHA256,
+            codeVerifier,
+            { encoding: Crypto.CryptoEncoding.BASE64 }
+        );
+        const codeChallenge = digestBase64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+        // Construct URL
+        const authUrl = 'https://zqcgontfrcuofeqrtvvq.supabase.co/auth/v1/oauth/authorize' + 
+            `?client_id=07d2d1a6-b408-40fc-ae2e-03207e614176` +
+            `&response_type=code` +
+            `&scope=${encodeURIComponent('openid profile email')}` +
+            `&redirect_uri=${encodeURIComponent('https://api.agoras.es/oauth/callback')}` +
+            `&code_challenge=${codeChallenge}` +
+            `&code_challenge_method=S256` +
+            `&state=${codeVerifier}`;
+
+        const result = await WebBrowser.openAuthSessionAsync(
+            authUrl,
+            'kaia://' // callbackUrlScheme
+        );
+
+        if (result.type === 'success' && result.url) {
+            // Extract query parameters
+            const { params } = QueryParams.getQueryParams(result.url);
+            const idToken = params.id_token;
+
+            if (idToken) {
+                // 1. Supabase Auth
+                const { data: supabaseData, error: supabaseError } = await supabase.auth.signInWithIdToken({
+                    provider: 'custom:agoras',
+                    token: idToken,
+                });
+
+                if (supabaseError) {
+                    throw new Error(`Error signing in with Agoras (Supabase): ${supabaseError.message}`);
+                }
+                console.log("Supabase Agoras Auth Success:", supabaseData.user?.id);
+
+                // 2. Firebase Auth
+                const provider = new OAuthProvider('oidc.agoras');
+                const credential = provider.credential({
+                    idToken: idToken,
+                    rawNonce: codeVerifier // Pasamos el nonce original para validar la sesión
+                });
+
+                const firebaseUser = await signInWithCredential(getAuth(getApp()), credential);
+                console.log("Firebase Agoras Auth Success:", firebaseUser.user?.uid);
+            }
+        }
+    } catch (e) {
+        console.error("Error in Agoras Auth:", e);
+    }
+}
 export async function SignInWithApple() {
     const generatedNonce = rawNonce();
     const hashedNonce = await Crypto.digestStringAsync(
@@ -124,6 +182,19 @@ export async function SignOut() {
             if (providers.includes('apple')) {
                 // Apple no requiere un "signOut" nativo como Google
                 console.log("El usuario había iniciado sesión con Apple");
+            }
+
+            // Si el proveedor fue Agoras, cerramos la sesión en el navegador web
+            if (providers.includes('custom:agoras') || providers.includes('agoras')) {
+                try {
+                    await WebBrowser.openAuthSessionAsync(
+                        'https://accounts.agoras.es/auth/signout?redirect_uri=kaia://logout',
+                        'kaia://'
+                    );
+                    console.log("El usuario cerró sesión en Agoras correctamente");
+                } catch (e) {
+                    console.error("Error al cerrar sesión de Agoras en la web:", e);
+                }
             }
 
             // Borramos el token del dispositivo para notificaciones

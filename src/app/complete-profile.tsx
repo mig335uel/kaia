@@ -72,6 +72,9 @@ export default function CompleteProfile() {
       const locationData = await ipApiResponse.json();
       console.log('Location Data:', locationData);
 
+      const birthDate = new Date(formData.birth_date);
+      const ageInYears = (Date.now() - birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
+
       const { error } = await supabase.from('users').insert({
         id: data.user.id,
         name: formData.name,
@@ -80,11 +83,10 @@ export default function CompleteProfile() {
         birth_date: formData.birth_date,
         profile_image: formData.profile_image || null,
         region: `${locationData.countryCode}, ${locationData.country}`, // e.g. "Quebec, Canada"
+        app_mode: ageInYears >= 18 ? null : 'Social',
       });
 
       if (error) throw error;
-      const birthDate = new Date(formData.birth_date);
-      const ageInYears = (Date.now() - birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
 
       let payload ={
         user_id: data.user.id,
@@ -116,7 +118,7 @@ export default function CompleteProfile() {
       });
       if (userPreferenceError) throw userPreferenceError;
       // Force a reload of the auth state or navigate manually
-      router.replace('/(tabs)');
+      router.replace('/');
     } catch (error: any) {
       Alert.alert(t('error'), error.message);
     } finally {

@@ -27,6 +27,7 @@
   "dontHaveAccount": "Don't have an account?",
   "loginWithGoogle": "Login with Google",
   "loginWithApple": "Login with Apple",
+  "loginWithAgoras": "Login with Agoras",
   "loginAnonymously": "Login anonymously",
   "logout": "Logout",
   "usernameAlreadyExists": "Username already exists",

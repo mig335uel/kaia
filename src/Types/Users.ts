@@ -10,11 +10,13 @@ export interface Profile{
     city?: string;
     country?: string;
     region?: string;
+    app_mode?: "Social" | "Dating" | null;
 }
 
 
 
 export interface UserPreferences{
+    id?: string;
     user_id: string;
     min_age_range: number;
     max_age_range: number;

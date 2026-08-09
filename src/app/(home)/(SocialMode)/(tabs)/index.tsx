@@ -14,6 +14,8 @@ import { UserPreferences } from "@/Types/Users";
 import { Ionicons } from "@expo/vector-icons";
 import { Cards } from "@/Components/CardsGames/Cards";
 import { ProfileFeed } from "@/Components/ProfilesFeed/ProfileFeed";
+import { useAppMode } from "@/hooks/useAppMode";
+
 
 
 
@@ -22,6 +24,8 @@ export default function HomeScreen() {
   const isDark = useColorScheme() === 'dark';
 
   const [feedPreferencesModalView, setFeedPreferencesModalView] = useState(false);
+  const [showModePicker, setShowModePicker] = useState(false);
+  const { setMode } = useAppMode();
 
   const handleSignOut = async () => {
     await SignOut();
@@ -29,6 +33,34 @@ export default function HomeScreen() {
   const user = useAuth();
 
   const [currentUserPreferences, setCurrentUserPreferences] = useState<UserPreferences | null>(null);
+
+  useEffect(() => {
+    const checkAppMode = async () => {
+      if (!user || !user.id) return;
+      
+      if (!user.app_mode) {
+        const bDate = new Date(user.birth_date);
+        const age = Math.floor((Date.now() - bDate.getTime()) / (1000 * 60 * 60 * 24 * 365.25));
+        if (age >= 18) {
+          setShowModePicker(true);
+        } else {
+          // Si es menor de 18, le asignamos Social y la UI se actualiza sola
+          await supabase.from('users').update({ app_mode: 'Social' }).eq('id', user.id);
+        }
+      }
+    };
+    checkAppMode();
+  }, [user]);
+
+  const selectMode = async (selectedMode: 'Social' | 'Dating') => {
+    setShowModePicker(false);
+    
+    // Al actualizar el contexto local, el (home)/_layout cambia instantaneamente
+    setMode(selectedMode.toLowerCase() as 'dating' | 'social');
+    
+    // Y actualizamos supabase en segundo plano
+    await supabase.from('users').update({ app_mode: selectedMode }).eq('id', user?.id);
+  };
 
   useEffect(() => {
     const getCurrentUserPreferences = async () => {
@@ -79,12 +111,87 @@ export default function HomeScreen() {
         />
       )}
       <View style={{ marginTop: 20 }} />
+      <TouchableOpacity 
+          onPress={() => selectMode('Dating')} 
+          style={{ backgroundColor: '#8E2DE2', padding: 10, marginHorizontal: 20, borderRadius: 10, alignItems: 'center' }}
+      >
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>GO TO DATING MODE (TEST SOCKET)</Text>
+      </TouchableOpacity>
+      <View style={{ marginTop: 10 }} />
       <Cards />
       <View style={{ marginBottom: 15 }} />
       <ProfileFeed isDark={isDark} />
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-
+        <TouchableOpacity onPress={handleSignOut}>
+          <View className="bg-white dark:bg-red-500 rounded-full p-3">
+            <Text className="text-white font-bold">{t("logout")}</Text>
+          </View>
+        </TouchableOpacity>
       </View>
+
+      <Modal
+        visible={showModePicker}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => {}}
+      >
+        <View className="flex-1 justify-end bg-black/60">
+          <View className={`w-full p-6 rounded-t-3xl ${isDark ? 'bg-[#1a1a1a]' : 'bg-white'}`}>
+            <Text className={`text-2xl font-bold mb-2 text-center ${isDark ? 'text-white' : 'text-black'}`}>
+              {t('chooseMode', 'Elige tu experiencia')}
+            </Text>
+            <Text className="text-gray-500 text-center mb-6">
+              {t('chooseModeDesc', 'Puedes cambiar de modo en cualquier momento desde los ajustes')}
+            </Text>
+
+            <TouchableOpacity 
+              onPress={() => selectMode('Dating')}
+              className="mb-4 shadow-sm"
+            >
+              <LinearGradient
+                colors={['#FF655B', '#FF5864']}
+                className="p-5 rounded-2xl flex-row items-center justify-between"
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+              >
+                <View className="flex-row items-center gap-4">
+                  <View className="bg-white/20 p-3 rounded-full">
+                    <Ionicons name="heart" size={24} color="white" />
+                  </View>
+                  <View>
+                    <Text className="text-white text-xl font-bold">Kaia Dating</Text>
+                    <Text className="text-white/80 font-medium">Conoce gente nueva y ten citas</Text>
+                  </View>
+                </View>
+                <Ionicons name="chevron-forward" size={24} color="white" />
+              </LinearGradient>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              onPress={() => selectMode('Social')}
+              className="mb-6 shadow-sm"
+            >
+              <LinearGradient
+                colors={['#8E2DE2', '#4A00E0']}
+                className="p-5 rounded-2xl flex-row items-center justify-between"
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+              >
+                <View className="flex-row items-center gap-4">
+                  <View className="bg-white/20 p-3 rounded-full">
+                    <Ionicons name="chatbubbles" size={24} color="white" />
+                  </View>
+                  <View>
+                    <Text className="text-white text-xl font-bold">Kaia Social</Text>
+                    <Text className="text-white/80 font-medium">Chatea, haz amigos y comparte</Text>
+                  </View>
+                </View>
+                <Ionicons name="chevron-forward" size={24} color="white" />
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }

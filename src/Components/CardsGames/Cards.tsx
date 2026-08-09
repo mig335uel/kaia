@@ -4,6 +4,7 @@ import { BlurView, BlurTargetView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import { Ionicons, Octicons, Zocial, Entypo } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 
 
@@ -15,7 +16,7 @@ export function Cards() {
     return (
         <View className='w-full flex flex-row items-center justify-around'>
             {/* Left Card: Chat */}
-            <TouchableOpacity
+            <TouchableOpacity onPress={()=> router.push('/TextMatchMaking')}
                 style={{
                     shadowColor: "#8A7CFF", // Outer glow color
                     shadowOffset: { width: 0, height: 0 },

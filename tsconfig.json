@@ -8,7 +8,8 @@
       "@Components/*": ["src/Components/*"],
       "@lib/*": ["src/lib/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@Services/*": ["src/Services/*"]
+      "@Services/*": ["src/Services/*"],
+      "@assets/*": ["assets/*"]
     }
   }
 }

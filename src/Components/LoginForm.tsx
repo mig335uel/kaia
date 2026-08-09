@@ -1,4 +1,4 @@
-import { View, Text, Platform, useColorScheme, KeyboardAvoidingView, TouchableOpacity, StyleSheet, TextInput, Alert, LayoutAnimation } from "react-native";
+import { View, Text, Platform, useColorScheme, KeyboardAvoidingView, TouchableOpacity, StyleSheet, TextInput, Alert, LayoutAnimation, Image } from "react-native";
 import { GlassView } from "expo-glass-effect";
 import { useTranslation } from 'react-i18next';
 import { LinearGradient } from "expo-linear-gradient";
@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Ionicons } from '@expo/vector-icons';
 import Svg, { Path } from 'react-native-svg';
 import MaskedView from "@react-native-masked-view/masked-view";
-import { SignInWithApple, SignInWithGoogle } from "@/Service/AuthService";
+import { SignInWithAgoras, SignInWithApple, SignInWithGoogle } from "@/Service/AuthService";
 
 function EmailLoginForm({ onBack, isDark }: { onBack: () => void, isDark: boolean }) {
     const { t } = useTranslation();
@@ -58,7 +58,7 @@ function EmailLoginForm({ onBack, isDark }: { onBack: () => void, isDark: boolea
     );
 }
 
-function LoginFormIOS({ isDark, googleSubmit, appleSubmit, showEmailForm, setShowEmailForm }: any) {
+function LoginFormIOS({ isDark, googleSubmit, appleSubmit, showEmailForm, setShowEmailForm, agorasSubmit }: any) {
     const { t } = useTranslation();
 
     if (showEmailForm) {
@@ -86,6 +86,17 @@ function LoginFormIOS({ isDark, googleSubmit, appleSubmit, showEmailForm, setSho
                             <Path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
                         </Svg>
                         <Text className={`text-center text-lg ${isDark ? 'text-white' : 'text-black'}`}>{t('loginWithGoogle')}</Text>
+                    </View>
+                </GlassView>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={(e) => { agorasSubmit(e) }} className={`rounded-full mb-3`}>
+                <GlassView glassEffectStyle='regular' isInteractive={true} style={{ borderRadius: 9999 }}>
+                    <View className="flex flex-row items-center justify-center p-5 gap-3">
+                        <Image
+                            source={require('@assets/AgorasLogo.png')}
+                            style={{ width: 24, height: 24 }}
+                        />
+                        <Text className={`text-center text-lg ${isDark ? 'text-white' : 'text-black'}`}>{t('loginWithAgoras')}</Text>
                     </View>
                 </GlassView>
             </TouchableOpacity>
@@ -130,11 +141,21 @@ export default function LoginForm() {
         }
     }
 
+    const agorasSubmit = async (e: any) => {
+        e.preventDefault();
+        try {
+            await SignInWithAgoras();
+        } catch (error) {
+            console.error('Error occurred while submitting Agoras login:', error);
+        }
+    }
+
     if (Platform.OS === 'ios') {
         return <LoginFormIOS 
             isDark={isDark} 
             googleSubmit={googleSubmit} 
             appleSubmit={appleSubmit} 
+            agorasSubmit={agorasSubmit}  
             showEmailForm={showEmailForm} 
             setShowEmailForm={setShowEmailForm} 
         />;
