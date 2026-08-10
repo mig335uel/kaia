@@ -1,21 +1,23 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router, Stack } from "expo-router";
-import { TouchableOpacity } from "react-native";
-
+import { SafeAreaView } from "react-native-safe-area-context";
+import { TouchableOpacity, useColorScheme, View } from 'react-native';
+import { useTranslation } from "react-i18next";
 
 
 
 export default function TextMatchMakingLayout() {
+    const { t } = useTranslation();
+    const isDark = useColorScheme() === 'dark';
     return (
         <Stack screenOptions={{
-            header: () => {
-                return <TouchableOpacity onPress={()=>{
-                    router.back()}}>
-                    <Ionicons name="close" size={24} color="black" />
-                </TouchableOpacity>
-            }
+
+            headerShown: false
         }}>
-            <Stack.Screen name="index" />
+            <Stack.Screen name="index" options={{
+                headerShown: false
+            }} />
         </Stack>
+
     );
 }
