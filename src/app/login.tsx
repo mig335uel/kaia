@@ -1,4 +1,4 @@
-import { Image, Text, View } from 'react-native';
+import { Image, Text, View, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import LoginForm from '@Components/LoginForm';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,8 +14,10 @@ export default function Index() {
   const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: isDark ? 'black' : 'white', justifyContent: 'center' }}>
-      <View className="items-center mb-8">
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1, backgroundColor: isDark ? 'black' : 'white' }}>
+        <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
+          <View className="items-center mb-8">
         <Image
           source={require('../../assets/Kaia.png')}
           style={{ width: 120, height: 120 }}
@@ -35,9 +37,11 @@ export default function Index() {
           </LinearGradient>
         </MaskedView>
       </View>
-      <View className="w-full  px-6">
-        <LoginForm />
-      </View>
-    </SafeAreaView>
+        <View className="w-full  px-6">
+          <LoginForm />
+        </View>
+        </SafeAreaView>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }

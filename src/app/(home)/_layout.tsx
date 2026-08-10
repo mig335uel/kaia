@@ -39,7 +39,7 @@ export default function HomeLayout() {
                 table: 'users',
                 filter: `id=eq.${user.id}`,
             }, (payload) => {
-                console.log('Payload:', payload);
+                setMode(payload.new.app_mode.toLowerCase() as 'dating' | 'social');
             }).subscribe();
         } 
         UpdatePorfile();

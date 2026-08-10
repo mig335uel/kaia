@@ -1,4 +1,4 @@
-import { View, Text, Platform, useColorScheme, KeyboardAvoidingView, TouchableOpacity, StyleSheet, TextInput, Alert, LayoutAnimation, Image } from "react-native";
+import { View, Text, Platform, useColorScheme, KeyboardAvoidingView, TouchableOpacity, StyleSheet, TextInput, Alert, LayoutAnimation, Image, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { GlassView } from "expo-glass-effect";
 import { useTranslation } from 'react-i18next';
 import { LinearGradient } from "expo-linear-gradient";
@@ -14,47 +14,49 @@ function EmailLoginForm({ onBack, isDark }: { onBack: () => void, isDark: boolea
     const [password, setPassword] = useState('');
 
     return (
-        <View className="flex flex-col gap-4 w-full">
-            <TouchableOpacity onPress={onBack} className="self-start p-2 mb-2">
-                <Ionicons name="chevron-back" size={24} color={isDark ? 'white' : 'black'} />
-            </TouchableOpacity>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className="flex flex-col gap-4 w-full">
+                <TouchableOpacity onPress={onBack} className="self-start p-2 mb-2">
+                    <Ionicons name="chevron-back" size={24} color={isDark ? 'white' : 'black'} />
+                </TouchableOpacity>
 
-            <View className={`w-full p-4 rounded-xl flex-row items-center gap-3 ${isDark ? 'bg-[#1E1E1E]' : 'bg-white'}`}>
-                <Ionicons name="mail-outline" size={20} color={isDark ? '#888' : '#666'} />
-                <TextInput
-                    placeholder={t('email')}
-                    placeholderTextColor={isDark ? '#888' : '#666'}
-                    className={`flex-1 text-base ${isDark ? 'text-white' : 'text-black'}`}
-                    keyboardType="email-address"
-                    value={email}
-                    onChangeText={setEmail}
-                    autoCapitalize="none"
-                />
-            </View>
+                <View className={`w-full p-4 rounded-xl flex-row items-center gap-3 ${isDark ? 'bg-[#1E1E1E]' : 'bg-white'}`}>
+                    <Ionicons name="mail-outline" size={20} color={isDark ? '#888' : '#666'} />
+                    <TextInput
+                        placeholder={t('email')}
+                        placeholderTextColor={isDark ? '#888' : '#666'}
+                        className={`flex-1 text-base ${isDark ? 'text-white' : 'text-black'}`}
+                        keyboardType="email-address"
+                        value={email}
+                        onChangeText={setEmail}
+                        autoCapitalize="none"
+                    />
+                </View>
 
-            <View className={`w-full p-4 rounded-xl flex-row items-center gap-3 ${isDark ? 'bg-[#1E1E1E]' : 'bg-white'}`}>
-                <Ionicons name="lock-closed-outline" size={20} color={isDark ? '#888' : '#666'} />
-                <TextInput
-                    placeholder={t('password')}
-                    placeholderTextColor={isDark ? '#888' : '#666'}
-                    className={`flex-1 text-base ${isDark ? 'text-white' : 'text-black'}`}
-                    secureTextEntry
-                    value={password}
-                    onChangeText={setPassword}
-                />
-            </View>
+                <View className={`w-full p-4 rounded-xl flex-row items-center gap-3 ${isDark ? 'bg-[#1E1E1E]' : 'bg-white'}`}>
+                    <Ionicons name="lock-closed-outline" size={20} color={isDark ? '#888' : '#666'} />
+                    <TextInput
+                        placeholder={t('password')}
+                        placeholderTextColor={isDark ? '#888' : '#666'}
+                        className={`flex-1 text-base ${isDark ? 'text-white' : 'text-black'}`}
+                        secureTextEntry
+                        value={password}
+                        onChangeText={setPassword}
+                    />
+                </View>
 
-            <TouchableOpacity className="mt-6 rounded-full" onPress={() => {}}>
-                <LinearGradient
-                    colors={['#6A5BFC', '#7575FF', '#3FCECC']}
-                    style={[styles.button, { borderRadius: 9999 }]}
-                    start={{ x: 0, y: 0.5 }}
-                    end={{ x: 1, y: 0.5 }}
-                >
-                    <Text className={`text-white text-lg text-center font-extrabold`}>{t('enter', 'Entrar')}</Text>
-                </LinearGradient>
-            </TouchableOpacity>
-        </View>
+                <TouchableOpacity className="mt-6 rounded-full" onPress={() => { }}>
+                    <LinearGradient
+                        colors={['#6A5BFC', '#7575FF', '#3FCECC']}
+                        style={[styles.button, { borderRadius: 9999 }]}
+                        start={{ x: 0, y: 0.5 }}
+                        end={{ x: 1, y: 0.5 }}
+                    >
+                        <Text className={`text-white text-lg text-center font-extrabold`}>{t('enter', 'Entrar')}</Text>
+                    </LinearGradient>
+                </TouchableOpacity>
+            </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
     );
 }
 
@@ -151,13 +153,13 @@ export default function LoginForm() {
     }
 
     if (Platform.OS === 'ios') {
-        return <LoginFormIOS 
-            isDark={isDark} 
-            googleSubmit={googleSubmit} 
-            appleSubmit={appleSubmit} 
-            agorasSubmit={agorasSubmit}  
-            showEmailForm={showEmailForm} 
-            setShowEmailForm={setShowEmailForm} 
+        return <LoginFormIOS
+            isDark={isDark}
+            googleSubmit={googleSubmit}
+            appleSubmit={appleSubmit}
+            agorasSubmit={agorasSubmit}
+            showEmailForm={showEmailForm}
+            setShowEmailForm={setShowEmailForm}
         />;
     }
 
