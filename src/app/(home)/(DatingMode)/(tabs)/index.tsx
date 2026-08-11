@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, useColorScheme } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppMode } from "@/hooks/useAppMode";
 import { supabase } from "@/lib/supabase";
@@ -7,7 +7,7 @@ import useAuth from "@/hooks/useAuth";
 export default function DatingIndex() {
     const { setMode } = useAppMode();
     const user = useAuth();
-
+    const isDark = useColorScheme() === 'dark';
     const selectMode = async (selectedMode: 'Social' | 'Dating') => {
         // Cambia la UI instantáneamente vía contexto
         setMode(selectedMode.toLowerCase() as 'dating' | 'social');
@@ -16,9 +16,9 @@ export default function DatingIndex() {
     };
 
     return (
-        <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: 'white' }}>
+        <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: isDark ? 'black' : 'white' }}>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>Dating Mode</Text>
+                <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20, color: isDark ? 'white': 'black' }}>Dating Mode</Text>
             </View>
         </SafeAreaView>
     );

@@ -183,6 +183,16 @@ export default function LoginForm() {
                             <Text className={`text-center text-lg`} style={stylesLoginForm({ isDark }).buttonText}>{t('loginWithGoogle')}</Text>
                         </View>
                     </TouchableOpacity>
+                    <TouchableOpacity onPress={(e) => { agorasSubmit(e) }} style={stylesLoginForm({ isDark }).button}>
+                        <View className="flex flex-row items-center justify-center p-5 gap-3">
+                            <Image
+                                source={require('@assets/AgorasLogo.png')}
+                                style={{ width: 24, height: 24 }}
+                            />
+                            <Text className={`text-center text-lg`} style={stylesLoginForm({ isDark }).buttonText}>{t('loginWithAgoras')}</Text>
+
+                        </View>
+                    </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
                         setShowEmailForm(true);

@@ -147,16 +147,16 @@ export default function HomeScreen() {
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
               >
-                <View className="flex-row items-center gap-4">
-                  <View className="bg-white/20 p-3 rounded-full">
+                <View className="flex-row justify-between w-full items-center py-4">
+                  <View className="ml-2 bg-white/20 p-3 rounded-full">
                     <Ionicons name="heart" size={24} color="white" />
                   </View>
                   <View>
                     <Text className="text-white text-xl font-bold">Kaia Dating</Text>
                     <Text className="text-white/80 font-medium">Conoce gente nueva y ten citas</Text>
                   </View>
+                  <Ionicons name="chevron-forward" size={24} color="white" />
                 </View>
-                <Ionicons name="chevron-forward" size={24} color="white" />
               </LinearGradient>
             </TouchableOpacity>
 
@@ -170,16 +170,16 @@ export default function HomeScreen() {
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
               >
-                <View className="flex-row items-center gap-4">
-                  <View className="bg-white/20 p-3 rounded-full">
+                <View className="flex-row justify-between w-full items-center py-4">
+                  <View className="bg-white/20 p-3 rounded-full ml-2">
                     <Ionicons name="chatbubbles" size={24} color="white" />
                   </View>
                   <View>
                     <Text className="text-white text-xl font-bold">Kaia Social</Text>
                     <Text className="text-white/80 font-medium">Chatea, haz amigos y comparte</Text>
                   </View>
+                  <Ionicons name="chevron-forward" size={24} color="white" />
                 </View>
-                <Ionicons name="chevron-forward" size={24} color="white" />
               </LinearGradient>
             </TouchableOpacity>
           </View>
