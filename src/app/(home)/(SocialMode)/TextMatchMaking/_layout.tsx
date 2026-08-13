@@ -17,6 +17,7 @@ export default function TextMatchMakingLayout() {
             <Stack.Screen name="index" options={{
                 headerShown: false
             }} />
+            
         </Stack>
 
     );
