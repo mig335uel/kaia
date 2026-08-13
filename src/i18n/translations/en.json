@@ -48,5 +48,13 @@
   "pleaseFillAllFields": "Please fill in all required fields",
   "error": "Error",
   "male": "Male",
-  "female": "Female"
+  "female": "Female",
+  "foryou": "For You",
+  "search": "Search",
+  "following": "Following",
+  "followers": "Followers",
+  "notifications": "Notifications",
+  "messages": "Messages",
+  "chat": "Chat",
+  "voice": "Voice"
 }
