@@ -14,7 +14,7 @@ import useAuth from "@/hooks/useAuth";
 export function AppBar({ isDark, feedPreferencesModalView }: { isDark: boolean, feedPreferencesModalView: () => void }) {
     const { t } = useTranslation();
     const user = useAuth();
-    const [notificationscount, setNotificationsCount] = useState<Number>(0);
+    const [notificationscount, setNotificationsCount] = useState<number>(0);
 
     useEffect(()=>{
         const recolectNotification = async()=>{
@@ -57,7 +57,8 @@ export function AppBar({ isDark, feedPreferencesModalView }: { isDark: boolean, 
                     </GlassView>
                     
                     {/* Badge de Notificación con LinearGradient */}
-                    <View style={{ position: 'absolute', top: 0, right: 0 }}>
+                    {notificationscount > 0 ?(
+                        <View style={{ position: 'absolute', top: 0, right: 0 }}>
                         <LinearGradient
                             colors={['#6A5BFC', '#7575FF', '#3FCECC']}
                             start={{ x: 0, y: 0.5 }}
@@ -74,7 +75,8 @@ export function AppBar({ isDark, feedPreferencesModalView }: { isDark: boolean, 
                         >
                             <Text style={{ color: 'white', fontSize: 10, fontWeight: 'bold' }}>{notificationscount.toString()}</Text>
                         </LinearGradient>
-                    </View>
+                    </View>):(<></>)}
+                    
                 </TouchableOpacity>
                 <View className="flex-row items-center">
                     <Image

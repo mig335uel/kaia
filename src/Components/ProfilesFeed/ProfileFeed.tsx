@@ -49,15 +49,15 @@ const ProfileCard = ({ profile, isDark }: { profile: Profile, isDark: boolean })
                     className="w-16 h-16 rounded-full bg-gray-200"
                 />
                 <View className="ml-4 flex-1">
-                    <View className="flex flex-row items-center gap-1">
+                    <View className="flex flex-row items-center gap-[1.5]">
 
                         <Text className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                             @{profile.username}
                         </Text>
-                        <View className={`flex flex-row items-center ${profile.gender === 'Male' ? 'bg-blue-500' : 'bg-pink-500'} px-[4px] py-[1.75px] gap-[1px] rounded-2xl`}>
+                        <View className={`flex flex-row items-center ${profile.gender === 'Male' ? 'bg-blue-500' : 'bg-pink-500'} px-[5px] py-[1.75px] gap-[1px] rounded-2xl pr-2.5`}>
 
-                            <Ionicons name={`${profile.gender === 'Male' ? 'male' : 'female'}`} color={isDark ? "white" : "black"} size={14} />
-                            <Text className={`text-sm mt-1 leading-5 text-white`}>{CalculateAge}</Text>
+                            <Ionicons name={`${profile.gender === 'Male' ? 'male' : 'female'}`} color={'white'} size={14} />
+                            <Text className={`text-[14px] mt-1 leading-5 text-white`}>{CalculateAge}</Text>
                         </View>
                     </View>
                     {profile.description ? (

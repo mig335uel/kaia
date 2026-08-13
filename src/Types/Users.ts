@@ -12,6 +12,14 @@ export interface Profile{
     region?: string;
     app_mode?: "Social" | "Dating" | null;
 }
+export interface SocialUsers{
+    id: string;
+    username: string;
+    description: string;
+    gender: "Male" | "Female";
+    birth_date: string;
+    profile_image: string;
+}
 
 
 

@@ -15,37 +15,53 @@ const VISIBLE_TABS = ['index'];
 export default function TabLayout() {
     const { t } = useTranslation();
     const isDark = useColorScheme() === 'dark';
-    const [activeIndex, setActiveIndex] = useState<number>(0);
-    // ── Medimos el ancho REAL de la barra con onLayout para posicionar
-    //    la píldora exactamente sobre cada icono, sin cálculos manuales.
-    const [barWidth, setBarWidth] = useState<number>(0);
-    function onBarLayout(event: LayoutChangeEvent): void {
-        setBarWidth(event.nativeEvent.layout.width);
-    }
 
     return (
         <Tabs
             screenOptions={{
                 headerShown: false,
-                tabBarStyle:{
-                    
-                    backgroundColor: isDark ? 'black' : 'white',
-                    
-                    
-                    // borderColor: isDark ? 'rgba(29,161,242,0.35)' : 'rgba(29,161,242,0.22)',
-                    // borderTopColor: isDark ? 'rgba(29,161,242,0.45)' : 'rgba(29,161,242,0.30)',
-                    
+                tabBarStyle: {
+                    backgroundColor: isDark ? '#1f2937' : '#ffffff',
+                    borderTopWidth: 1,
+                    borderTopColor: isDark ? '#374151' : '#e5e7eb',
+                    height: 70,
+                    paddingBottom: 8,
+                    paddingTop: 8,
+                    elevation: 10, // Sombra clásica en Android
+                    shadowColor: '#000', 
+                    shadowOffset: { width: 0, height: -2 },
+                    shadowOpacity: 0.1,
+                    shadowRadius: 4,
                 },
-                tabBarShowLabel: false
+                tabBarActiveTintColor: isDark ? '#3FCECC' : '#8E2DE2', // Color principal morado
+                tabBarInactiveTintColor: isDark ? '#9ca3af' : '#6b7280', // Gris para inactivos
+                tabBarShowLabel: false,
+                tabBarLabelStyle: {
+                    fontSize: 12,
+                    fontWeight: '600',
+                    marginTop: -2,
+                }
             }}
-            
         >
-            <Tabs.Screen name="index" options={{
-                title: t('home'),
-                tabBarIcon: ({ color, size }) => (
-                    <Octicons name="home-fill" size={size} color={color} />
-                ),
-            }} />
+            <Tabs.Screen 
+                name="index" 
+                options={{
+                    title: t('home'),
+                    tabBarIcon: ({ color, size }) => (
+                        <Octicons name="home" size={24} color={color} />
+                    ),
+                }} 
+            />
+            
+            <Tabs.Screen 
+                name="discover" 
+                options={{
+                    title: t('discover', 'Descubrir'),
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="earth" size={26} color={color} />
+                    ),
+                }} 
+            />
         </Tabs>
     );
 }
