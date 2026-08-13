@@ -99,7 +99,7 @@ export default function HomeScreen() {
 
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={['top']} className={`${isDark ? 'bg-black' : 'bg-white'}`}>
+    <SafeAreaView style={{ flex: 1 }} edges={['top']} className={`${isDark ? 'bg-[#1f2937]' : 'bg-white'}`}>
       <AppBar isDark={isDark} feedPreferencesModalView={() => setFeedPreferencesModalView(true)} />
       {feedPreferencesModalView && (
         <FeedPreferencesModal
