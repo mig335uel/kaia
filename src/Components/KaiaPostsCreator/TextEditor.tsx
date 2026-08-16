@@ -1,4 +1,4 @@
-import { TextInput, View } from "react-native";
+import { KeyboardAvoidingView, TextInput, View } from "react-native";
 
 
 interface Props{
@@ -14,15 +14,17 @@ export default function KaiaPostsTextEditor({
     setContent
 }: Props) {
     return (
-        <View>
+        <View className="flex-1 w-full mt-2">
             <TextInput
                 value={content}
                 onChangeText={setContent}
-                placeholder="Escribe tu publicación"
+                placeholder="¿Qué tienes en mente?"
                 placeholderTextColor="#9ca3af"
                 multiline
-                style={{ minHeight: 120 }}
-                className="w-full text-black dark:text-white"
+                autoFocus={true}
+                textAlignVertical="top"
+                style={{ fontSize: 20, minHeight: 200 }}
+                className="flex-1 w-full text-black dark:text-white"
             />
         </View>
     );

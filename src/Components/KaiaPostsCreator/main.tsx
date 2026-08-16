@@ -1,15 +1,21 @@
-import { Text, View, TextInput, useColorScheme, TouchableOpacity, Modal, PanResponder, Animated } from "react-native";
-import { useRef, useEffect } from "react";
+import { Text, View, TextInput, useColorScheme, TouchableOpacity, Modal, PanResponder, Animated, KeyboardAvoidingView } from "react-native";
+import { useRef, useEffect, useState } from "react";
+import KaiaPostsTextEditor from "./TextEditor";
 
 
 
+interface PostCreator {
 
+    content: string;
+}
 
 export default function KaiaPostsCreator({ isVisible, setIsVisible }: { isVisible: boolean, setIsVisible: (isVisible: boolean) => void }) {
     const isDark = useColorScheme() === "dark";
     const panY = useRef(new Animated.Value(0)).current;
+    const [newPost, setNewPost] = useState<PostCreator>({
+        content: "",
+    });
 
-    
 
     // Reseteamos la posición cuando se abre el modal
     useEffect(() => {
@@ -59,6 +65,7 @@ export default function KaiaPostsCreator({ isVisible, setIsVisible }: { isVisibl
                     style={{
                         flex: 1,
                         justifyContent: 'flex-end',
+
                         backgroundColor: 'rgba(0, 0, 0, 0.5)'
                     }}
                 >
@@ -67,7 +74,7 @@ export default function KaiaPostsCreator({ isVisible, setIsVisible }: { isVisibl
                         activeOpacity={1}
                         onPress={() => setIsVisible(false)}
                     />
-                    <Animated.View 
+                    <Animated.View
                         {...panResponder.panHandlers}
                         style={{
                             backgroundColor: isDark ? '#1f2937' : 'white',
@@ -75,6 +82,7 @@ export default function KaiaPostsCreator({ isVisible, setIsVisible }: { isVisibl
                             borderTopRightRadius: 25,
                             padding: 20,
                             alignItems: 'center',
+
                             minHeight: '70%',
                             shadowColor: '#000',
                             shadowOffset: { width: 0, height: -2 },
@@ -86,8 +94,9 @@ export default function KaiaPostsCreator({ isVisible, setIsVisible }: { isVisibl
                     >
                         {/* Pequeña barra superior para indicar que es deslizable (opcional pero muy recomendado) */}
                         <View style={{ width: 40, height: 5, backgroundColor: isDark ? '#3a3a3c' : '#d1d1d6', borderRadius: 3, marginBottom: 20 }} />
-                        
-                        <Text className={` ${isDark ? 'text-white' : 'text-black'}`}>KaiaPostsCreator</Text>
+                        <KeyboardAvoidingView behavior="padding" style={{ flex: 1, width: '100%' }}>
+                            <KaiaPostsTextEditor content={newPost.content} setContent={(content: string) => setNewPost({ ...newPost, content })} />
+                        </KeyboardAvoidingView>
                     </Animated.View>
                 </View>
 
