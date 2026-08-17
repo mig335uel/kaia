@@ -1,6 +1,9 @@
 import { Text, View, TextInput, useColorScheme, TouchableOpacity, Modal, PanResponder, Animated, KeyboardAvoidingView } from "react-native";
 import { useRef, useEffect, useState } from "react";
 import KaiaPostsTextEditor from "./TextEditor";
+import { Posts } from "@/Types/Posts";
+import useAuth from "@/hooks/useAuth";
+import { Profile } from "@/Types/Users";
 
 
 
@@ -12,8 +15,17 @@ interface PostCreator {
 export default function KaiaPostsCreator({ isVisible, setIsVisible }: { isVisible: boolean, setIsVisible: (isVisible: boolean) => void }) {
     const isDark = useColorScheme() === "dark";
     const panY = useRef(new Animated.Value(0)).current;
-    const [newPost, setNewPost] = useState<PostCreator>({
+    const user = useAuth();
+    const [newPost, setNewPost] = useState<Posts>({
+        id: "",
+        user: user as Profile,
         content: "",
+        media_feature: [],
+        create_at: new Date(),
+        likes_count: 0,
+        comments_count: 0,
+        share_count: 0,
+        views_count: 0,
     });
 
 
