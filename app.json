@@ -65,6 +65,7 @@
       "@react-native-firebase/app",
       "expo-sqlite",
       "expo-router",
+      "expo-camera",
       "expo-notifications",
       [
         "react-native-google-mobile-ads",
