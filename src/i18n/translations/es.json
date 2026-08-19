@@ -57,5 +57,6 @@
   "notifications": "Notificaciones",
   "messages": "Mensajes",
   "chat": "Chat",
-  "voice": "Llamada"
+  "voice": "Llamada",
+  "inbox": "Bandeja de entrada"
 }

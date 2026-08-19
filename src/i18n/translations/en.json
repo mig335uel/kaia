@@ -56,5 +56,6 @@
   "notifications": "Notifications",
   "messages": "Messages",
   "chat": "Chat",
-  "voice": "Voice"
+  "voice": "Voice",
+  "inbox": "Inbox"
 }
