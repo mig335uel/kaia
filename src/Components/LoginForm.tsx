@@ -70,7 +70,7 @@ function LoginFormIOS({ isDark, googleSubmit, appleSubmit, showEmailForm, setSho
     return (
         <View className={`flex flex-col gap-3 w-full ${isDark ? 'bg-dark' : 'bg-light'}`}>
             <TouchableOpacity onPress={(e) => { appleSubmit(e) }} className={`rounded-full mb-3`}>
-                <GlassView glassEffectStyle='regular' isInteractive={true} style={{ borderRadius: 9999 }}>
+                <GlassView glassEffectStyle='regular' isInteractive={true} style={{ borderRadius: 9999 }} tintColor={isDark ? '#1f2937' : 'white'}>
                     <View className="flex flex-row items-center justify-center p-5 gap-3">
                         <Ionicons name="logo-apple" size={24} color={isDark ? 'white' : 'black'} />
                         <Text className={`text-center text-lg ${isDark ? 'text-white' : 'text-black'}`}>{t('loginWithApple')}</Text>
@@ -79,7 +79,7 @@ function LoginFormIOS({ isDark, googleSubmit, appleSubmit, showEmailForm, setSho
             </TouchableOpacity>
 
             <TouchableOpacity onPress={(e) => { googleSubmit(e) }} className={`rounded-full mb-3`}>
-                <GlassView glassEffectStyle='regular' isInteractive={true} style={{ borderRadius: 9999 }}>
+                <GlassView glassEffectStyle='regular' isInteractive={true} style={{ borderRadius: 9999 }} tintColor={isDark ? '#1f2937' : 'white'}>
                     <View className="flex flex-row items-center justify-center p-5 gap-3">
                         <Svg width="24" height="24" viewBox="0 0 24 24">
                             <Path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -92,7 +92,7 @@ function LoginFormIOS({ isDark, googleSubmit, appleSubmit, showEmailForm, setSho
                 </GlassView>
             </TouchableOpacity>
             <TouchableOpacity onPress={(e) => { agorasSubmit(e) }} className={`rounded-full mb-3`}>
-                <GlassView glassEffectStyle='regular' isInteractive={true} style={{ borderRadius: 9999 }}>
+                <GlassView glassEffectStyle='regular' isInteractive={true} style={{ borderRadius: 9999 }} tintColor={isDark ? '#1f2937' : 'white'}>
                     <View className="flex flex-row items-center justify-center p-5 gap-3">
                         <Image
                             source={require('@assets/AgorasLogo.png')}
@@ -173,7 +173,7 @@ export default function LoginForm() {
             ) : (
                 <>
                     <TouchableOpacity onPress={(e) => { googleSubmit(e) }} style={stylesLoginForm({ isDark }).button}>
-                        <View className="flex flex-row items-center justify-center p-5 gap-3">
+                        <View className="flex flex-row items-center justify-center p-5 gap-3 ">
                             <Svg width="24" height="24" viewBox="0 0 24 24">
                                 <Path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
                                 <Path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />

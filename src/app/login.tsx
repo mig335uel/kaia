@@ -15,7 +15,7 @@ export default function Index() {
   const isDark = colorScheme === 'dark';
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1, backgroundColor: isDark ? 'black' : 'white' }}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1, backgroundColor: isDark ? '#1F2937' : 'white' }}>
         <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
           <View className="items-center mb-8">
         <Image

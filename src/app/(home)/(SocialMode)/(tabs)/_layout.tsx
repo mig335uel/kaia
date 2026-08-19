@@ -1,4 +1,4 @@
-import { EvilIcons, Foundation, Ionicons, MaterialIcons, Octicons } from "@expo/vector-icons";
+import { EvilIcons, Foundation, Ionicons, MaterialIcons, Octicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { LiquidGlassIndicator } from "@/Components/LiquidGlassTabBar";
 import { Tabs } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -62,6 +62,12 @@ export default function TabLayout() {
                     ),
                 }} 
             />
+            <Tabs.Screen name="messages" options={{
+                title: t('messages'),
+                tabBarIcon: ({ color, size }) => (
+                    <Ionicons name="paper-plane-outline" size={26} color={color} />
+                ),
+            }} />
         </Tabs>
     );
 }
