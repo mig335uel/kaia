@@ -13,7 +13,7 @@ export default function Inbox() {
     const [inbox, setInbox] = useState<any[]>([]);
     useEffect(() =>{
         const getInbox = async () =>{
-            const snap = await firestore().collection("messages").where("participants", "array-contains", user!.id).get();
+            const snap = await firestore().collection("chats").where("participants", "array-contains", user!.id).get();
         }
     }, [user]);
     return (
