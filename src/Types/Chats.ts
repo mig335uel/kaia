@@ -11,7 +11,7 @@ export interface Chat {
   lastMessageTime?: Timestamp;
 
   isPermanent: boolean;
-  likes: Record<string, boolean>;
+  likes?: Record<string, boolean>;
 }
 
 export interface Message {
