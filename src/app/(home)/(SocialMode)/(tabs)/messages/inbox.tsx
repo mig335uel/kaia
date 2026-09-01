@@ -3,6 +3,7 @@ import firestore from "@react-native-firebase/firestore";
 import { useState, useEffect } from "react";
 import { InboxAppBar } from "@/Components/appBar/InboxAppBar";
 import useAuth from "@/hooks/useAuth";
+import { Chat } from "@/Types/Chats";
 
 
 
@@ -10,10 +11,14 @@ import useAuth from "@/hooks/useAuth";
 export default function Inbox() {
     const isDark = useColorScheme() === "dark";
     const user = useAuth();
-    const [inbox, setInbox] = useState<any[]>([]);
+    const [inbox, setInbox] = useState<Chat[]>([]);
     useEffect(() =>{
         const getInbox = async () =>{
             const snap = await firestore().collection("chats").where("participants", "array-contains", user!.id).get();
+            setInbox(snap.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            })) as Chat[]);
         }
     }, [user]);
     return (
