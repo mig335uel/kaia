@@ -20,7 +20,7 @@ export default function Inbox() {
         <>
             <InboxAppBar user={user!} />
             <View className={`flex-1 items-center justify-center ${isDark ? 'bg-[#1f2937]' : 'bg-white'}`} >
-
+                
             </View>
         </>
     )
