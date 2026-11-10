@@ -9,7 +9,7 @@ import {
     DeviceEventEmitter,
     LayoutChangeEvent,
 } from 'react-native';
-import { NativeTabs } from "expo-router/build/native-tabs";
+import { NativeTabs } from "expo-router/native-tabs";
 import { useCallback, useEffect, useState } from "react";
 const VISIBLE_TABS = ['index'];
 export default function TabLayout() {

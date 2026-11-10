@@ -48,7 +48,7 @@ export default function TabLayout() {
                 options={{
                     title: t('home'),
                     tabBarIcon: ({ color, size }) => (
-                        <Octicons name="home" size={24} color={color} />
+                        <Octicons name="home" size={24} color={typeof color === 'string' ? color : undefined} />
                     ),
                 }} 
             />
@@ -58,14 +58,14 @@ export default function TabLayout() {
                 options={{
                     title: t('discover', 'Descubrir'),
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="earth" size={26} color={color} />
+                        <Ionicons name="earth" size={26} color={typeof color === 'string' ? color : undefined} />
                     ),
                 }} 
             />
             <Tabs.Screen name="messages" options={{
                 title: t('messages'),
                 tabBarIcon: ({ color, size }) => (
-                    <Ionicons name="paper-plane-outline" size={26} color={color} />
+                    <Ionicons name="paper-plane-outline" size={26} color={typeof color === 'string' ? color : undefined} />
                 ),
             }} />
         </Tabs>

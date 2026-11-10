@@ -1,4 +1,4 @@
-import { Stack } from "expo-router/build/stack";
+import { Stack } from "expo-router";
 
 
 

@@ -62,8 +62,6 @@ export default function DiscoverLayout() {
                         );
                     }
                 }}
-                
-                headerMode='screen'
             >
                 <MaterialTopTabs.Screen name="foryou" options={{ title: t("foryou") }} />
                 <MaterialTopTabs.Screen name="following" options={{ title: t("following") }} />

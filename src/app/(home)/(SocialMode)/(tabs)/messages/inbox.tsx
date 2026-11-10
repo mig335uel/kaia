@@ -1,5 +1,5 @@
 import { FlatList, Text, useColorScheme, View } from "react-native";
-import firestore from "@react-native-firebase/firestore";
+import { getFirestore, collection, query, where, getDocs } from "@react-native-firebase/firestore";
 import { useState, useEffect } from "react";
 import { InboxAppBar } from "@/Components/appBar/InboxAppBar";
 import useAuth from "@/hooks/useAuth";
@@ -14,7 +14,9 @@ export default function Inbox() {
     const [inbox, setInbox] = useState<Chat[]>([]);
     useEffect(() =>{
         const getInbox = async () =>{
-            const snap = await firestore().collection("chats").where("participants", "array-contains", user!.id).get();
+            const db = getFirestore();
+            const q = query(collection(db, "chats"), where("participants", "array-contains", user!.id));
+            const snap = await getDocs(q);
             setInbox(snap.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()

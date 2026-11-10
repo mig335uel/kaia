@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import { RealtimeChannel } from "@supabase/supabase-js";
-import firestore, { Timestamp } from "@react-native-firebase/firestore";
+import { getFirestore, doc, setDoc, serverTimestamp, Timestamp } from "@react-native-firebase/firestore";
 
 let matchChannel: RealtimeChannel | null = null;
 
@@ -171,15 +171,17 @@ async function crearChatEnFirestore(
     matchedUserId: string
 ): Promise<void> {
     try {
-        const docRef = firestore().collection("chats").doc(chatId);
+        const db = getFirestore();
+        const docRef = doc(db, "chats", chatId);
 
-        await docRef.set(
+        await setDoc(
+            docRef,
             {
                 users: [miUserId, matchedUserId],
-                createdAt: firestore.FieldValue.serverTimestamp(),
+                createdAt: serverTimestamp(),
                 createdAtEpoch: Date.now(),
                 lastMessage: "",
-                lastMessageTime: firestore.FieldValue.serverTimestamp(),
+                lastMessageTime: serverTimestamp(),
                 // Datos para la mecánica de 5 minutos
                 isPermanent: false,
                 expireAt: Timestamp.now().toMillis() + 5 * 60 * 1000,

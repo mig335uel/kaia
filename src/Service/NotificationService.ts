@@ -2,7 +2,14 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
-import messaging from '@react-native-firebase/messaging';
+import {
+  getMessaging,
+  requestPermission,
+  AuthorizationStatus,
+  isDeviceRegisteredForRemoteMessages,
+  registerDeviceForRemoteMessages,
+  getToken,
+} from '@react-native-firebase/messaging';
 import { supabase } from '@/lib/supabase';
 
 export async function requestNotificationPermission(): Promise<string | null> {
@@ -42,25 +49,26 @@ export async function requestNotificationPermission(): Promise<string | null> {
 
   try {
     let token: string | undefined;
+    const messaging = getMessaging();
     
     if (Platform.OS === 'ios') {
-      const authStatus = await messaging().requestPermission();
+      const authStatus = await requestPermission(messaging);
       const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+        authStatus === AuthorizationStatus.AUTHORIZED ||
+        authStatus === AuthorizationStatus.PROVISIONAL;
 
       if (!enabled) {
         throw new Error("Permisos no concedidos en Firebase Messaging");
       }
 
-      if (!messaging().isDeviceRegisteredForRemoteMessages) {
-        await messaging().registerDeviceForRemoteMessages();
+      if (!isDeviceRegisteredForRemoteMessages(messaging)) {
+        await registerDeviceForRemoteMessages(messaging);
       }
       
       let retries = 3;
       while (retries > 0) {
         try {
-          token = await messaging().getToken();
+          token = await getToken(messaging);
           if (token) break;
         } catch (e) {
           if (retries === 1) throw e;
@@ -69,7 +77,7 @@ export async function requestNotificationPermission(): Promise<string | null> {
         retries--;
       }
     } else {
-      token = await messaging().getToken();
+      token = await getToken(messaging);
     }
     
     console.log("✅ Token push (FCM) obtenido:", token);

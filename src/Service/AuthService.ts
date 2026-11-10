@@ -1,6 +1,5 @@
 import { supabase } from '@/lib/supabase';
 import * as WebBrowser from 'expo-web-browser';
-import * as QueryParams from 'expo-auth-session/build/QueryParams';
 import * as AuthSession from 'expo-auth-session';
 import { removeDeviceToken } from './NotificationService';
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -87,8 +86,14 @@ export async function SignInWithAgoras() {
         );
 
         if (result.type === 'success' && result.url) {
-            // Extract query parameters
-            const { params } = QueryParams.getQueryParams(result.url);
+            // Extract query parameters (supporting both query string and hash fragment)
+            const parsedUrl = new URL(result.url, 'https://phony.example');
+            const params: Record<string, string> = Object.fromEntries(parsedUrl.searchParams);
+            if (parsedUrl.hash) {
+                new URLSearchParams(parsedUrl.hash.replace(/^#/, '')).forEach((value, key) => {
+                    params[key] = value;
+                });
+            }
             const idToken = params.id_token;
 
             if (idToken) {

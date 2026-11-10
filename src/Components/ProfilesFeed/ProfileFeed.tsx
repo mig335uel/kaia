@@ -20,7 +20,7 @@ export function ProfileFeed({ isDark }: { isDark: boolean }) {
             className="w-full pt-2"
             onEndReached={loadMore}
             onEndReachedThreshold={0.5}
-            ListFooterComponent={loading ? <ActivityIndicator size="large" color={isDark ? "white" : "black"} style={{ marginVertical: 20 }} /> : null}
+            ListFooterComponent={loading ? <ActivityIndicator size="large" color={isDark ? "white" : "black"} style={{ marginVertical: 20 }} /> : undefined}
         />
     );
 }

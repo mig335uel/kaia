@@ -33,7 +33,10 @@
         "NSCameraUsageDescription": "Kaia necesita acceder a la cámara para que puedas hacer fotos y vídeos para tu perfil, chats y publicaciones.",
         "NSLocationWhenInUseUsageDescription": "Kaia necesita acceder a tu ubicación para mostrarte contenido cercano.",
         "NSUserTrackingUsageDescription": "Este permiso nos ayuda a ofrecer anuncios personalizados y a financiar el desarrollo de Kaia.",
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "SignInWithApple": {
+          "appleTeamId": "RJKHKTQ383"
+        }
       },
       "googleServicesFile": "./GoogleService-Info.plist"
     },
@@ -71,23 +74,16 @@
         "react-native-google-mobile-ads",
         {
           "androidAppId": "ca-app-pub-8578170674294985~2993770475",
-          "iosAppId": "ca-app-pub-8578170674294985~8166206105",
-          "ios_app_id": "ca-app-pub-8578170674294985~8166206105"
+          "iosAppId": "ca-app-pub-8578170674294985~8166206105"
         }
       ],
       [
         "expo-build-properties",
         {
           "ios": {
-            "deploymentTarget": "16.4",
-            "useFrameworks": "static",
+            "deploymentTarget": "17.2",
+            "useFrameworks": "dynamic",
             "buildReactNativeFromSource": false,
-            "extraPods": [
-              {
-                "name": "FirebaseCore",
-                "modular_headers": true
-              }
-            ],
             "release": {
               "deadCodeStripping": true,
               "stripDebugSymbolsDuringCopy": true,
@@ -95,7 +91,8 @@
             }
           },
           "android": {
-            "kotlinVersion": "2.3.0",
+            "minSdkVersion": 24,
+            "kotlinVersion": "2.4.0",
             "enableShrinkResourcesInReleaseBuilds": true,
             "enableProguardInReleaseBuilds": true,
             "extraProguardRules": "-keep class javax.crypto.** { *; }\n-keep class java.security.** { *; }\n-keep class com.antihodio.agora.interceptors.** { *; }\n-keepattributes Signature, *Annotation*, EnclosingMethod\n-keep class okhttp3.** { *; }\n-dontwarn okhttp3.**"
@@ -106,10 +103,15 @@
       "expo-web-browser",
       "@react-native-community/datetimepicker",
       "expo-secure-store",
-      "@react-native-google-signin/google-signin",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosDependencyManager": "spm"
+        }
+      ],
       [
         "./withKotlinCompiler.js",
-        "2.3.0"
+        "2.4.0"
       ],
       "@react-native-firebase/auth"
     ]
